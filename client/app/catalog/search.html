@@ -1,0 +1,40 @@
+<div ng-controller="CatalogCtrl">
+    <div class="container-fluid" ng-controller="SearchCtrl as searchCtrl">
+
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="form center-block">
+                    <form class="input-form" role="search">
+                        <div class="input-group">
+                            <input type="text" ng-hide="searchCollapsed" class="form-control center-block" ng-model="searchTerm" placeholder="Search">
+                            <span class="input-group-btn">
+                                <button type="reset" ng-hide="searchCollapsed" ng-click="searchClear()" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-remove">
+                                        <span class="sr-only">Close</span>
+                                    </span>
+                                </button>
+                                <button ng-click="$state.go('catalog.search.results',{'searchTerm':searchTerm})" type="submit" class="btn btn-default">
+
+                                    <span class="glyphicon glyphicon-search">
+                                        <span class="sr-only">Search</span>
+                                    </span>
+                                    </a>
+                                </button>
+                            </span>
+                            </span>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-xs-12">
+
+                <div ui-view autoscroll>
+                    <rd-loading ng-show="isLoadingResults"></rd-loading </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>

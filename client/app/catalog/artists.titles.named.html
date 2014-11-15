@@ -1,0 +1,6 @@
+<div class="ui-view"></div>
+<rd-loading ng-hide="results"></rd-loading>
+
+<ul class="list-group">
+    <a ng-show="results" class="col-xs-12 col-md-4 list-group-item text-justified" ng-repeat="result in results" ui-sref="catalog.song({artist: result.artist,title:result.title})">{{result.name}} {{result.id}}</a> 
+</ul>

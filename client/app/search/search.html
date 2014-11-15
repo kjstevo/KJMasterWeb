@@ -1,0 +1,24 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-xs-12">
+            <div class="widget">
+                <div class="widget-header">
+                    Search Results
+                </div>
+                <div class="widget-body">
+
+                    <rd-loading class="col-xs-12 center-block" ng-hide="searchResults"></rd-loading>
+                    <div data-ng-show="searchError">
+                        <span>{{searchError}}</span>
+
+                    </div>
+                    <ul class="list-group">
+                        <a ng-click="songClick(song)" ng-repeat="song in searchResults" class="list-group-item" ng-hide="searchError" ng-click="selectSong(song)">{{song.get('artist')}} - {{song.get('title')}}</a>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>

@@ -1,0 +1,38 @@
+<div class="navbar header navbar-fixed-top">
+
+    <button class="btn btn-lg main-menu pull-left" ng-click="toggleSidebar()">
+        <span class="glyphicon glyphicon-th "></span>
+    </button>
+    <center>
+        <div class="hidden-xs" ng-controller="CatalogCtrl">
+            <tabs style="color:#FFFFFF;" type="pills" justified="true" data="tabData">
+                <tab heading="Artists">
+                    <div ng-include="catalog/artists.html"></div>
+                </tab>
+                <tab heading="Titles">
+                    <div ng-include="catalog/titles.html"></div>
+                </tab>
+                <tab heading="Search">
+                    <div ng-include="catalog/search.html"></div>
+                </tab>
+            </tabs>
+        </div>
+        <div class="visible-xs" ng-controller="CatalogCtrl">
+            <tabs class="visible-xs" style="color:#FFFFFF;" type="pills" data="tabData">
+                <tab heading="Artists">
+                    <div ng-include="catalog/artists.html"></div>
+                </tab>
+                <tab heading="Titles">
+                    <div ng-include="catalog/titles.html"></div>
+                </tab>
+                <tab heading="Search">
+                    <div ng-include="catalog/search.html"></div>
+                </tab>
+            </tabs>
+        </div>
+    </center>
+</div>
+
+<div ui-view autoscroll>
+    <rd-loading></rd-loading>
+</div>

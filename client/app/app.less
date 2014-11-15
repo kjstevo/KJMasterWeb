@@ -1,0 +1,94 @@
+@import 'bootstrap/less/bootstrap.less';
+@import 'font-awesome/less/font-awesome.less';
+@icon-font-path: '/bower_components/bootstrap/fonts/';
+@fa-font-path: '/bower_components/font-awesome/fonts';
+/**
+ * App-wide Styles
+ */
+.header {
+  background-color:@sidebarBaseColor;
+}
+.page-content {
+    padding-top: 70px;
+}
+.main-menu{
+  color:#C0C0C0;
+  background-color:@sidebarBaseColor;
+  z-index:99;
+}
+
+body {
+  background-image:url('/assets/images/singers.jpg');
+}
+.list-group-item, .tab:hover {
+    background-image: 'assets/images/hover.png';
+    cursor: pointer;
+}
+.browsehappy {
+    margin: 0.2em 0;
+    background: #ccc;
+    color: #000;
+    padding: 0.2em 0;
+}
+.current-state {
+    pointer-events: none;
+    cursor: default;
+    color: #fff;
+    border-left: 3px solid #BF0D11;
+    text-indent: 22px;
+    .menu-icon {
+        text-indent: 25px;
+    }
+}
+// injector
+@import 'account/login/login.less';
+@import 'admin/admin.less';
+@import 'catalog/catalog.less';
+@import 'dashboard/less/content.less';
+@import 'dashboard/less/hamburg.less';
+@import 'dashboard/less/header.less';
+@import 'dashboard/less/loading.less';
+@import 'dashboard/less/main.less';
+@import 'dashboard/less/mixins.less';
+@import 'dashboard/less/sidebar.less';
+@import 'dashboard/less/variables.less';
+@import 'dashboard/less/widgets.less';
+@import 'history/history.less';
+@import 'main/main.less';
+@import 'queue/queue.less';
+@import 'song/song.less';
+@import 'songbook/songbook.less';
+@import 'modal/modal.less';
+// endinjector
+.load-modal {
+    /* some styles to position the modal at the center of the page */
+    
+    position: fixed;
+    top: 5%;
+    left: 25%;
+    height: 25%;
+    width: 25%;
+    z-index: 10;
+    opacity: 100%;
+}
+.load-modal-inner {
+    background-color: #FFFFFF;
+    height: 200px;
+    width: 200px;
+    box-shadow: true;
+    border: 1px solid;
+    border-radius: 20px;
+    z-index: 10;
+}
+.ui-show {
+    color: blue;
+    z-index: 11;
+    transition: all 0.5s ease;
+    /* You should probably browser-prefix this */
+}
+.ui-hide {
+    opacity: 0;
+    z-index: 0;
+    transition: all 0.5s ease;
+    /* You should probably browser-prefix this */
+}

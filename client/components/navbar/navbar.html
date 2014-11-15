@@ -1,0 +1,60 @@
+<div class="navbar navbar-inverse navbar-fixed-top" ng-controller="NavbarCtrl">
+    <div class="container">
+        <div class="navbar-header">
+            <div  ng-click="isCollapsed = !isCollapsed">
+            <button class="navbar-toggle"  type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button></div>
+            <a href="/" class="navbar-brand">
+                <span>KJ Master</span>
+            </a>
+        </div>
+        <div collapse="isCollapsed" class="navbar-collapse collapse" id="navbar-main">
+            <ul class="nav navbar-nav">
+                <li ng-repeat="item in menu" ui-sref-active="active">
+                    <a ui-sref="{{item.state}}">{{item.title}}</a>
+                </li>
+                <li>
+                    <!--  <form class="input-form" role="search">
+                        <div class="form-group">
+                            <input type="text" ng-hide="searchCollapsed" class="form-control" ng-model="searchTerm" placeholder="Search">
+                            <span class="input-group-btn">
+                                <button type="reset" ng-hide="searchCollapsed" ng-click="searchClear()" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-remove">
+                                        <span class="sr-only">Close</span>
+                                    </span>
+                                </button>
+                                <button type="submit" ng-click="clickSearch(searchCollapsed)" class="btn btn-default">
+                                    <span class="glyphicon glyphicon-search">
+                                        <span class="sr-only">Search</span>
+                                    </span>
+                                </button>
+                            </span>
+                        </div>
+                    </form> -->
+                </li>
+                <li ng-show="isLoggedIn" ui-sref-active="active">
+                    <a ui-sref="settings">Settings</a>
+                </li>
+                <li ng-show="isAdmin()" ui-sref-active="active"><a ui-sref="admin">Admin</a>
+                </li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                <li ng-hide="isLoggedIn" ui-sref-active="active"><a ui-sref="signup">Sign up</a>
+                </li>
+                <li ng-hide="isLoggedIn" ui-sref-active="active"><a ui-sref="login">Login</a>
+                </li>
+                <li ng-show="isLoggedIn">
+                    <p class="navbar-text">Welcome back {{user.get('nick')}}</p>
+                </li>
+
+                <li ng-show="isLoggedIn"><a ui-sref="logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
