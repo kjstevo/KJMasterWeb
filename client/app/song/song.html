@@ -22,15 +22,19 @@
         </div>
     </div>
     <div class="text-center">
-        <button ng-hide="isInSongbook" ng-click="songbook(id)" class="btn btn-primary">
+        <button ng-hide="isInSongbook" ng-click="addSongbook(id)" class="btn btn-primary">
             <label>Add Songbook</label>
         </button>
 
-        <button ng-show="isInSongbook" ng-click="songbookDel(id)" class="btn btn-primary">
+        <button ng-show="isInSongbook" ng-click="delSongbook(id)" class="btn btn-primary">
             <label>Remove Songbook</label>
         </button>
-        <button class="btn btn-primary">
-            <label>Add Quicklist</label>
+        <button ng-hide="isInQuickList" ng-click="addQuickList(id)" class="btn btn-primary">
+            <label>Add Quick List</label>
+        </button>
+
+        <button ng-show="isInQuickList" ng-click="delQuickList(id)" class="btn btn-primary">
+            <label>Remove Quick List</label>
         </button>
         <button ng-click="request(id)" class="btn btn-primary">
             <label>Request Now</label>

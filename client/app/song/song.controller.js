@@ -6,20 +6,7 @@ angular.module('kjmApp')
             //$scope.songId=$stateParams.songId;
             try { //start try
                 AuthDb.loadSongById($stateParams.id).then(function(results) {
-                    // $scope.results = results.map(function(obj) {
-                    //     return {
-                    //         name: obj.get('bareFile'),
-                    //         key: obj.get('key'),
-                    //         bareFile: obj.get('bareFile'),
-                    //         filepath: obj.get('filepath'),
-                    //         discNo: obj.get('discNum'),
-                    //         track: obj.get('track'),
-                    //         artist: obj.get('artist'),
-                    //         title: obj.get('title'),
-                    //         type: 'song',
-                    //         id: obj.id
-                    //     };
-                    // });
+
                     $scope.artist = results.get('artist');
                     $scope.title = results.get('title');
                     $scope.discNum = results.get('discNum');
@@ -44,13 +31,58 @@ angular.module('kjmApp')
 
             } //end try
         }
-        $scope.songbook = function(id) {
+        $scope.addSongbook = function(id) {
             AuthDb.addToSongbook(id).then(function() {
                 $scope.isInSongbook = true;
-                //  $state.go('songbook');
+                $scope.addAlert('The song has been added to your songbook.', 'info');
+
             });
 
+
         };
+        $scope.delSongbook = function(id) {
+            AuthDb.delFromSongbook(id).then(function() {
+                $scope.isInSongbook = false;
+                $scope.addAlert('The song has been deleted from your songbook.', 'info');
+
+            });
+
+
+        };
+
+        $scope.addQuickList = function(id) {
+            AuthDb.addToQuickList(id).then(function() {
+                $scope.isInQuickList = true;
+                $scope.addAlert('The song has been added to your quick list.', 'info');
+
+            });
+
+
+        };
+        $scope.delQuickList = function(id) {
+            AuthDb.delFromQuickList(id).then(function() {
+                $scope.isInQuickList = false;
+                $scope.addAlert('The song has been deleted from your quick list.', 'info');
+
+            });
+
+
+        };
+
+        $scope.isInQuickList = false;
+
+        function checkQuickList() {
+            AuthDb.isInQuickList($stateParams.id).then(function(results) {
+                if (results.get('key') > 0) {
+                    $scope.isInQuickList = true;
+
+                } else {
+                    $scope.isInQuickList = false;
+                }
+            }, function(err) {
+                $scope.isInQuickList = false;
+            });
+        }
 
         function checkSongbook() {
             AuthDb.isInSongbook($stateParams.id).then(function(results) {
@@ -62,9 +94,11 @@ angular.module('kjmApp')
 
             }, function(err) {
                 $scope.isInSongbook = false;
+                console.log(err);
             });
         }
         checkSongbook();
+        checkQuickList();
         $scope.request = function(id) {
             if (!$scope.sessionUser.get('nick')) {
                 $scope.addAlert('You must <a href="/login">login</a> or <a href="/signup">sign up</a> to perform that function', 'warning');

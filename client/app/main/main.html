@@ -35,9 +35,7 @@
 
         <div class="widget-body">
             <ol>
-                <li>Hungry Eyes</li>
-                <li>The devil went down to georgia</li>
-                <li>Xanadu</li>
+                <li ng-repeat="result in quickList">{{result.name}}</li>
             </ol>
             <a ui-sref="songbook" class="small pull-right">view more</a>
         </div>
