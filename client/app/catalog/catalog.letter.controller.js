@@ -19,6 +19,7 @@ angular.module('kjmApp')
 
         try { //start try
             var lcType = type.toLowerCase();
+            $scope.backUrl = lcType + 's.' + letter;
             AuthDb.loadSongsByLetter(letter, type).then(function(results) {
                 $scope.results = results.map(function(obj) {
                     return {

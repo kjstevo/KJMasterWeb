@@ -1,6 +1,11 @@
-
+<a href="/catalog/titles">
+    <span class="glyphicon glyphicon-hand-left">
+        <span>Back</span>
+    </span>
+</a>
 <ul class="list-group">
     <a ng-show="results" class="col-xs-12 col-md-4 list-group-item text-justified" ng-repeat="result in results" ui-sref="catalog.titleslettertitle({name: result.name})">{{result.name}}</a>
 </ul>
-<div class="ui-view"><rd-loading ng-hide="results"
-></rd-loading></div>
+<div class="ui-view">
+    <rd-loading ng-hide="results"></rd-loading>
+</div>

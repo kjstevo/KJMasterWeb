@@ -1,7 +1,39 @@
 <main-Menu></main-Menu>
-<div class="col-md-12">
-    {{result.id}}
-</div>
-Song List:
+<div class="col-xs-12">
+    <a ui-sref="^" href="#">
+        <span class="glyphicon glyphicon-hand-left">
+            <span>Back</span>
+        </span>
+    </a>
+    <div class="widget">
+        <div class="widget-header">
+            <h3>{{artist}} - {{title}}</h3>
+        </div>
+        <div class="widget-body">
 
-<div ng-repeat="result in results">{{result}}</div>
+            <b>Artist:</b>  <a class="link" ng-href="catalog/artist/{{artist}}">{{artist}}</a>
+            <br>
+            <b>Title:</b>  <a class="link" ng-href="catalog/title/{{title}}">{{title}}</a>
+            <br>
+            <b>Disc:</b> {{discNum}}
+            <br>
+            <b>Track:</b>{{track}}
+            <br>
+        </div>
+    </div>
+    <div class="text-center">
+        <button ng-hide="isInSongbook" ng-click="songbook(id)" class="btn btn-primary">
+            <label>Add Songbook</label>
+        </button>
+
+        <button ng-show="isInSongbook" ng-click="songbookDel(id)" class="btn btn-primary">
+            <label>Remove Songbook</label>
+        </button>
+        <button class="btn btn-primary">
+            <label>Add Quicklist</label>
+        </button>
+        <button ng-click="request(id)" class="btn btn-primary">
+            <label>Request Now</label>
+        </button>
+    </div>
+</div>

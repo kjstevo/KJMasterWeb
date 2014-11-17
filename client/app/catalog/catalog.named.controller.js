@@ -14,11 +14,17 @@ angular.module('kjmApp')
         } catch (error) {
             console.log(error);
         }
+        var toLowerCase = function(w) {
+            return w.toLowerCase();
+        };
+
+        $scope.type = toLowerCase(type) + 's' + 'letter' + toLowerCase(type);
 
         try { //start try
             AuthDb.loadSongsByType(name, type).then(function(results) {
 
                 $scope.results = results.map(function(obj) {
+                    $scope.backUrl = 'catalog/' + toLowerCase(type) + 's' + '/' + name.substr(0, 1);
                     return {
                         name: obj.get('bareFile'),
                         key: obj.get('key'),
