@@ -21,7 +21,7 @@
             <br>
         </div>
     </div>
-    <div class="text-center">
+    <div class="text-center" ng-show="enableButtons">
         <button ng-hide="isInSongbook" ng-click="addSongbook(id)" class="btn btn-primary">
             <label>Add Songbook</label>
         </button>
@@ -40,4 +40,6 @@
             <label>Request Now</label>
         </button>
     </div>
-</div>
+    <div class="text-center" ng-hide="enableButtons">
+        <span><a ui-sref="signup" href="#">Sign up</a> or <a ui-sref="login" href="#">login</a> to request this song or add it to your personal songbook.</span>
+    </div>

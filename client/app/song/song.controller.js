@@ -97,8 +97,13 @@ angular.module('kjmApp')
                 console.log(err);
             });
         }
-        checkSongbook();
-        checkQuickList();
+        if ($scope.sessionUser !== null) {
+            $scope.enableButtons = true;
+            checkSongbook();
+            checkQuickList();
+        } else {
+            $scope.enableButtons = false;
+        }
         $scope.request = function(id) {
             if (!$scope.sessionUser.get('nick')) {
                 $scope.addAlert('You must <a href="/login">login</a> or <a href="/signup">sign up</a> to perform that function', 'warning');
