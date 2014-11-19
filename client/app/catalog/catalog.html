@@ -1,38 +1,41 @@
 <div class="navbar header navbar-fixed-top">
 
-    <button class="btn btn-lg main-menu pull-left" ng-click="toggleSidebar()">
+    <button class="btn btn-lg main-menu pull-left col-xs-1" ng-click="toggleSidebar()">
         <span class="glyphicon glyphicon-th "></span>
     </button>
-    <center>
-        <div class="hidden-xs" ng-controller="CatalogCtrl">
-            <tabs style="color:#FFFFFF;" type="pills" justified="true" data="tabData">
-                <tab heading="Artists">
-                    <div ng-include="catalog/artists.html"></div>
-                </tab>
-                <tab heading="Titles">
-                    <div ng-include="catalog/titles.html"></div>
-                </tab>
-                <tab heading="Search">
-                    <div ng-include="catalog/search.html"></div>
-                </tab>
-            </tabs>
-        </div>
-        <div class="visible-xs" ng-controller="CatalogCtrl">
-            <tabs class="visible-xs" style="color:#FFFFFF;" type="pills" data="tabData">
-                <tab heading="Artists">
-                    <div ng-include="catalog/artists.html"></div>
-                </tab>
-                <tab heading="Titles">
-                    <div ng-include="catalog/titles.html"></div>
-                </tab>
-                <tab heading="Search">
-                    <div ng-include="catalog/search.html"></div>
-                </tab>
-            </tabs>
-        </div>
-    </center>
-</div>
+    <div class="text-center text-center col-xs-2 pull-right">
+        <!-- <img class="img img-responsive" src="assets/images/kjmmenu5.png"> -->
+        <h4>KJ Master</h4>
 
+    </div>
+    <div class="hidden-xs" ng-controller="CatalogCtrl">
+        <tabs style="color:#FFFFFF;" type="pills" justified="true" data="tabData">
+            <tab heading="Artists">
+                <div ng-include="catalog/artists.html"></div>
+            </tab>
+            <tab heading="Titles">
+                <div ng-include="catalog/titles.html"></div>
+            </tab>
+            <tab heading="Search">
+                <div ng-include="catalog/search.html"></div>
+            </tab>
+        </tabs>
+    </div>
+    <div class="visible-xs" ng-controller="CatalogCtrl">
+        <tabs class="visible-xs" style="color:#FFFFFF;" type="pills" data="tabData">
+            <tab class="col-xs-3" heading="Artists">
+                <div ng-include="catalog/artists.html"></div>
+            </tab>
+            <tab class="col-xs-3" heading="Titles">
+                <div ng-include="catalog/titles.html"></div>
+            </tab>
+            <tab class="col-xs-3" heading="Search">
+                <div ng-include="catalog/search.html"></div>
+            </tab>
+        </tabs>
+    </div>
+    <!-- </div> -->
+</div>
 <div ui-view autoscroll>
     <rd-loading></rd-loading>
 </div>

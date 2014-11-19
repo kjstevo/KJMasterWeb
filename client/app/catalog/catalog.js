@@ -6,6 +6,7 @@ angular.module('kjmApp')
 
         $stateProvider.state('catalog', {
             url: '/catalog',
+            abstract: true,
             templateUrl: 'app/catalog/catalog.html'
         }).state('catalog.artists', {
             url: '/artists',

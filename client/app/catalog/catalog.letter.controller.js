@@ -8,6 +8,7 @@ angular.module('kjmApp')
 
         if ($state.$current.self.url === '/artists/:letter') {
             type = 'Artist';
+
         }
 
         try {

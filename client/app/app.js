@@ -15,6 +15,8 @@ angular.module('kjmApp', [
         'ui.showhide',
         'kjmApp.models.Song'
 
+
+
     ])
     .config(function($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
         $urlRouterProvider

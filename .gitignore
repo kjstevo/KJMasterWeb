@@ -9,4 +9,9 @@ parse
 ratchet
 client/app/ParseServices
 server
-db
+kjm-dev
+kjm-dev.0
+kjm-dev.ns
+local.0
+local.ns
+mongod.lock

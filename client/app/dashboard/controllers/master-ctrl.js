@@ -16,7 +16,7 @@ angular.module('kjmApp')
             'icon': 'fa fa-home'
         }, {
             'title': 'Catalog',
-            'state': 'catalog',
+            'state': 'catalog.artists',
             'icon': 'fa fa-book'
         }, {
             'title': 'Queue',

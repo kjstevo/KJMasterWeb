@@ -24,7 +24,30 @@ angular.module('kjmApp')
             }
 
         ];
+        $scope.swipeRight = function(type) {
+            if (type === 'artist') {
+                $scope.swipe(1);
+            }
+            if (type === 'title') {
+                $state.go('catalog.artist');
+            }
+            if (type === 'search') {
+                $state.go('catalog.title');
+            }
 
+        };
+
+        $scope.swipeLeft = function(type) {
+            if (type === 'artist') {
+                $state.go('catalog.title');
+            }
+            if (type === 'title') {
+                $state.go('catalog.search');
+            }
+            if (type === 'search') {
+                $scope.swipe(0);
+            }
+        };
 
         // $scope.clickName=function(typeName,type){
         //   var lcType = type.toLowerCase();
