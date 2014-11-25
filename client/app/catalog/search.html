@@ -4,26 +4,32 @@
         <div class="row">
 
             <div class="col-xs-12">
-                <div class="form center-block">
+                <div class="form">
                     <form class="input-form" role="search">
+                        <div class="col-xs-10">
                         <div class="input-group">
-                            <input type="text" ng-hide="searchCollapsed" class="form-control center-block" ng-model="searchTerm" placeholder="Search">
+                             <span class="input-group-btn">
+                            <button type="reset" ng-hide="searchCollapsed" ng-click="searchClear()" class="btn btn-default pull-right">
+                                <span class="glyphicon glyphicon-remove">
+                                    <span class="sr-only">Close</span>
+                                </span>
+                            </button>
+                        </span>
+                            <input type="text" ng-hide="searchCollapsed" class="form-control" ng-model="searchTerm" style="margin-top:5px" placeholder="Search">
+                            <!-- <span class="input-group-btn"> -->
+                
                             <span class="input-group-btn">
-                                <button type="reset" ng-hide="searchCollapsed" ng-click="searchClear()" class="btn btn-default">
-                                    <span class="glyphicon glyphicon-remove">
-                                        <span class="sr-only">Close</span>
-                                    </span>
-                                </button>
-                                <button ng-click="$state.go('catalog.search.results',{'searchTerm':searchTerm})" type="submit" class="btn btn-default">
+                            <button ng-click="$state.go('catalog.search.results',{'searchTerm':searchTerm})" type="submit" class="btn btn-default inline">
+                                <span class="glyphicon glyphicon-search">
+                                    <span class="sr-only">Search</span>
+                                </span>
+                            </button>
+                        </span>
+                      
+                            <!-- </span> -->
 
-                                    <span class="glyphicon glyphicon-search">
-                                        <span class="sr-only">Search</span>
-                                    </span>
-                                    </a>
-                                </button>
-                            </span>
-                            </span>
                         </div>
+                    </div>
                     </form>
                 </div>
             </div>
