@@ -12,8 +12,9 @@ angular.module('kjmApp', [
         'parse-angular.enhance',
         'ParseServices',
         'ui.router.tabs',
-        'ui.showhide',
-        'kjmApp.models.Song'
+        'ui.unique'
+
+
 
 
 
@@ -53,7 +54,7 @@ angular.module('kjmApp', [
     };
 })
 
-.run(['ParseSDK', '$cookieStore', '$rootScope', '$state', '$stateParams', 'User', 'AuthDb', function(ParseService, $cookieStore, $rootScope, $state, $stateParams, User, AuthDb) {
+.run(['ParseSDK', '$cookieStore', '$rootScope', '$state', '$stateParams', 'User', 'AuthDb', 'SongFile', function(ParseService, $cookieStore, $rootScope, $state, $stateParams, User, AuthDb, SongFile) {
     // Redirect to login if route requires auth and you're not logged in
 
     // Parse is initialised by injecting the ParseService into the Angular app

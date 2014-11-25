@@ -2,32 +2,53 @@
 
 angular.module('kjmApp')
     .controller('SongCtrl', function($scope, $stateParams, AuthDb, $modal) {
-        if ($stateParams.id) {
+        if ($stateParams.id || $stateParams.name) {
             //$scope.songId=$stateParams.songId;
             try { //start try
-                AuthDb.loadSongById($stateParams.id).then(function(results) {
+                if ($stateParams.id) {
+                    AuthDb.loadSongById($stateParams.id).then(function(results) {
 
-                    $scope.artist = results.get('artist');
-                    $scope.title = results.get('title');
-                    $scope.discNum = results.get('discNum');
-                    $scope.track = results.get('track');
-                    $scope.key = results.get('key');
-                    $scope.id = results.id;
+                        $scope.artist = results.get('artist');
+                        $scope.title = results.get('title');
+                        $scope.discNum = results.get('discNum');
+                        $scope.track = results.get('track');
+                        $scope.key = results.get('key');
+                        $scope.id = results.id;
 
 
-                }, function(err) {
-                    $scope.resultError = err;
-                    $scope.addAlert('There was an error finding the song.  Please try again later.', 'danger');
-                    $scope.resultError = 'There are no results to display.';
-                    $scope.results = $scope.resultError;
-                    console.log(err);
-                });
+                    }, function(err) {
+                        $scope.resultError = err;
+                        $scope.addAlert('There was an error finding the song.  Please try again later.', 'danger');
+                        $scope.resultError = 'There are no results to display.';
+                        $scope.results = $scope.resultError;
+                        console.log(err);
+                    });
+
+                    //end code
+                } else {
+                    AuthDb.loadSongByName($stateParams.name).then(function(results) {
+
+                        $scope.artist = results.get('artist');
+                        $scope.title = results.get('title');
+                        $scope.discNum = results.get('discNum');
+                        $scope.track = results.get('track');
+                        $scope.key = results.get('key');
+                        $scope.id = results.id;
+
+
+                    }, function(err) {
+                        $scope.resultError = err;
+                        $scope.addAlert('There was an error finding the song.  Please try again later.', 'danger');
+                        $scope.resultError = 'There are no results to display.';
+                        $scope.results = $scope.resultError;
+                        console.log(err);
+                    });
+                }
             } catch (error) {
                 $scope.addAlert('There was an error finding the song.  Please try again later.', 'danger');
                 $scope.resultError = 'There are no results to display.';
                 $scope.results = $scope.resultError;
                 console.log(error);
-                //end code
 
             } //end try
         }
@@ -124,7 +145,8 @@ angular.module('kjmApp')
             });
             modalInstance.result.then(function(confirmed) {
                 if (confirmed) {
-                    $scope.addAlert('confirmed', 'info');
+                    AuthDb.addToQueue($scope.id);
+                    $scope.addAlert('Added to queue.', 'info');
                 } else {
                     $scope.addAlert('cancel', 'info');
                 }

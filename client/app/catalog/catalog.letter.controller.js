@@ -5,8 +5,9 @@ angular.module('kjmApp')
         $scope.isLoading = true;
         var type = 'Title';
         var letter = 'A';
+$scope.statename = $state.$current.self.name;
 
-        if ($state.$current.self.url === '/artists/:letter') {
+        if ($state.$current.self.name === 'catalog.artists.letter') {
             type = 'Artist';
 
         }

@@ -3,7 +3,7 @@
         <div class="col-md-8 col-xs-12">
             <div class="widget">
                 <div class="widget-header">
-                    Search Results
+                    <h3>Search Results</h3>
                 </div>
                 <div class="widget-body">
 
@@ -12,8 +12,10 @@
                         <span>{{searchError}}</span>
 
                     </div>
+                    <div ng-show="searchResults" ng-hide="searchResults[0]">There are no results to display.</div>
+                    {{searchResults}}
                     <ul class="list-group">
-                        <a ng-click="songClick(song)" ng-repeat="song in searchResults" class="list-group-item" ng-hide="searchError" ng-click="selectSong(song)">{{song.get('artist')}} - {{song.get('title')}}</a>
+                        <a ui-sref="catalog.search.song({name:song.get('name')})" href="#" ng-repeat="song in searchResults" class="list-group-item" ng-hide="searchError">{{song.get('artist')}} - {{song.get('title')}}</a>
                     </ul>
 
                 </div>

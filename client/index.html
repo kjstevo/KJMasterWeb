@@ -123,9 +123,9 @@
                             <!-- Header Bar -->
                             <!-- End Header Bar -->
                             <!-- Begin Main Content -->
-                            <div class="row alerts-container" data-ng-show="alerts.length">
-                                <div class="col-xs-12" ng-cloak>
-                                    <alert data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
+                            <div class="row alerts-container" data-ng-cloak data-ng-show="alerts.length">
+                                <div class="col-xs-12">
+                                    <alert ng-show="alerts[0]" data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
                                 </div>
                             </div>
                             <section data-ui-view>
@@ -184,7 +184,7 @@
     <script src="bower_components/angular-touch/angular-touch.js"></script>
     <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="bower_components/angular-ui-router-tabs/src/ui-router-tabs.js"></script>
-    <script src="bower_components/angular-ui-utils/showhide.js"></script>
+    <script src="bower_components/angular-ui-utils/unique.js"></script>
     <!-- endbower -->
 
     <script src="socket.io-client/socket.io.js"></script>
@@ -205,13 +205,17 @@
     <script src="app/catalog/catalog.js"></script>
     <script src="app/catalog/catalog.letter.controller.js"></script>
     <script src="app/catalog/catalog.named.controller.js"></script>
+    <script src="app/checkLogin/checkLogin.directive.js"></script>
     <script src="app/dashboard/controllers/alerts-ctrl.js"></script>
     <script src="app/dashboard/controllers/master-ctrl.js"></script>
     <script src="app/dashboard/directives/loading.js"></script>
     <script src="app/dashboard/directives/widget-body.js"></script>
     <script src="app/dashboard/directives/widget-header.js"></script>
     <script src="app/dashboard/directives/widget.js"></script>
+    <script src="app/db/Models/history.js"></script>
+    <script src="app/db/Models/queue.js"></script>
     <script src="app/db/Models/songFile.js"></script>
+    <script src="app/db/Models/webRequest.js"></script>
     <script src="app/db/services/AuthDb.service.js"></script>
     <script src="app/history/history.controller.js"></script>
     <script src="app/history/history.js"></script>

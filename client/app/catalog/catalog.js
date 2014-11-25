@@ -22,28 +22,28 @@ angular.module('kjmApp')
             options: {
                 justified: true
             },
-        }).state('catalog.artistsletter', {
+        }).state('catalog.artists.letter', {
             url: '/artists/:letter',
             templateUrl: 'app/catalog/artists.letter.html',
             controller: 'CatalogLetterCtrl',
             options: {
                 justified: true
             },
-        }).state('catalog.artistsletterartist', {
+        }).state('catalog.artists.artist', {
             url: '/artist/:name',
             templateUrl: 'app/catalog/artists.titles.named.html',
             controller: 'CatalogNamedCtrl',
             options: {
                 justified: true
             },
-        }).state('catalog.titlesletter', {
+        }).state('catalog.titles.letter', {
             url: '/titles/:letter',
             templateUrl: 'app/catalog/titles.letter.html',
             controller: 'CatalogLetterCtrl',
             options: {
                 justified: true
             },
-        }).state('catalog.titleslettertitle', {
+        }).state('catalog.titles.title', {
             url: '/title/:name',
             templateUrl: 'app/catalog/artists.titles.named.html',
             controller: 'CatalogNamedCtrl',

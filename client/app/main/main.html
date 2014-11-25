@@ -7,7 +7,7 @@
         <a class="col-xs-3 btn btn-primary bgp" style="margin-top:10px;padding-bottom:10px;z-index:100;" ui-sref="catalog.artists" href="#">Catalog</a>
         <a class="col-xs-3 btn btn-primary bgp" style="margin-top:10px;padding-bottom:10px;" href="#" ui-sref="songbook">Songbook</a>
         <a class="col-xs-3 btn btn-primary bgp" style="margin-top:10px;padding-bottom:10px;" href="#" ui-sref="history">History</a>
-        <a class="col-xs-3 btn btn-primary bgp" style="margin-top:10px;padding-bottom:10px;" href="#" ui-sref="queue">Queue</a>
+        <a class="col-xs-3 btn btn-primary bgp" style="margin-top:10px;padding-bottom:10px;" href="#" ui-sref="queue">Queue  <div class="badge" style="padding-left:5px">{{queueCount}}</div></a>
 
     </div>
 </div>
@@ -18,10 +18,10 @@
             Crab Bowl Queue
         </div>
         <div class="widget-body">
+
             <ol>
-                <li>KJ Stevo</li>
-                <li>Jeffy</li>
-                <li>Some other Jerk</li>
+                <li ng-repeat="request in queue" ng-class="{'bg-info': request.get('singer').toLowerCase() === sessionUser.get('nick').toLowerCase()}">
+                    <div ng-hide="!(request.get('singerOrder')*4)" ng-show="request.get('singer').toLowerCase() === sessionUser.get('nick').toLowerCase()" class="bg-info small pull-right">Aprx {{request.get('singerOrder')*4}} mins.</div>{{request.get('singer')}}</li>
             </ol>
             <a ui-sref="queue" class="small pull-right">view more</a>
         </div>

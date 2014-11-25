@@ -3,12 +3,12 @@
 angular.module('kjmApp')
     .config(function($stateProvider) {
         $stateProvider
-            .state('catalog.titleslettertitle.song', {
+            .state('catalog.titles.title.song', {
                 url: '/song/:id',
                 templateUrl: 'app/song/song.html',
                 controller: 'SongCtrl'
 
-            }).state('catalog.artistsletterartist.song', {
+            }).state('catalog.artists.artist.song', {
                 url: '/song/:id',
                 templateUrl: 'app/song/song.html',
                 controller: 'SongCtrl'
@@ -16,6 +16,11 @@ angular.module('kjmApp')
             })
             .state('songbook.song', {
                 url: '/song/:id',
+                templateUrl: 'app/song/song.html',
+                controller: 'SongCtrl'
+
+            }).state('catalog.search.song', {
+                url: '/songname/:name',
                 templateUrl: 'app/song/song.html',
                 controller: 'SongCtrl'
 

@@ -52,9 +52,8 @@ angular.module('kjmApp')
             });
         };
         $scope.songClick = function(song) {
-            $state.go('catalog.song', {
-                'artist': song.get('artist'),
-                'title': song.get('title')
+            $state.go('catalog.search.song', {
+                'name': song.name
             });
         };
         // function performSearch(searchCollapsed,searchTerm){

@@ -4,6 +4,26 @@ angular.module('kjmApp')
     .controller('MainCtrl', function($scope, AuthDb) {
 
         try {
+            AuthDb.getQueue('small').then(function(results) {
+                $scope.queue = results;
+            }, function(err) {
+                $scope.resultError = err;
+                //  $scope.addAlert('There was an error retrieving your quickList.  Check your internet connection.', 'danger');
+                $scope.resultError = 'There are no results to display.';
+                $scope.results = $scope.resultError;
+                console.log(err);
+
+
+            });
+            AuthDb.getQueueCount().then(function(count) {
+                $scope.queueCount = count;
+            }, function(err) {
+
+                console.log(err);
+
+
+            });
+
             AuthDb.retrieveQuickList().then(function(results) {
                 $scope.quickList = results.map(function(obj) {
                     return {

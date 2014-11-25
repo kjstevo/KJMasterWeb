@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kjmApp')
-    .factory('AuthDb', function AuthDb($rootScope, $cookieStore, $q, ParseSDK, User) {
+    .factory('AuthDb', function AuthDb($rootScope, $cookieStore, $q, ParseSDK, User, SongFile, Queue, WebRequest, History) {
         // Service logic
         // ...
 
@@ -330,6 +330,7 @@ angular.module('kjmApp')
                 var lcType = type.toLowerCase();
 
                 var query = new Parse.Query(type);
+                query.limit(1000);
                 var defer = $q.defer();
 
                 query.startsWith(lcType, letter);
@@ -349,7 +350,7 @@ angular.module('kjmApp')
             },
             loadSongsByType: function(name, type) {
                 var lcType = type.toLowerCase();
-                var query = new Parse.Query('Song');
+                var query = new Parse.Query(SongFile);
                 var defer = $q.defer();
                 query.equalTo(lcType, name);
                 query.find({
@@ -404,6 +405,23 @@ angular.module('kjmApp')
                 var defer = $q.defer();
 
                 query.get(id, {
+                    success: function(results) {
+                        defer.resolve(results);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        defer.reject(error);
+                    }
+
+                });
+                return defer.promise;
+            },
+            loadSongByName: function(name) {
+
+                var query = new Parse.Query('Song');
+                var defer = $q.defer();
+                query.equalTo('bareFile', name);
+                query.first({
                     success: function(results) {
                         defer.resolve(results);
                     },
@@ -498,6 +516,153 @@ angular.module('kjmApp')
                 });
                 return defer.promise;
             },
+            getQueueCount: function() {
+                var query = new Parse.Query(Queue);
+                var defer = $q.defer();
+                query.count({
+                    success: function(count) {
+                        defer.resolve(count);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
+
+            },
+            getQueue: function(size) {
+                var query = new Parse.Query(Queue);
+                var defer = $q.defer();
+                if (size !== 'large') {
+                    query.limit(5);
+                }
+                query.ascending('singerOrder');
+                query.find({
+                    success: function(results) {
+                        defer.resolve(results);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        defer.reject(error);
+                    }
+
+                });
+                return defer.promise;
+            },
+            addToQueue: function(id) {
+                var user = Parse.User.current();
+                var checkWebRequest = function() {
+                    var defer = $q.defer();
+                    var query = new Parse.Query(WebRequest);
+                    query.equalTo('singer', user);
+
+                    query.first({
+                        success: function(result) {
+                            if (result) {
+                                defer.resolve(result);
+                            } else {
+                                defer.resolve((new WebRequest()));
+                            }
+                        },
+                        error: function(error) {
+                            console.log(error);
+                            defer.resolve((new WebRequest()));
+                        }
+                    });
+                    return defer.promise;
+                };
+                var checkHistory = function(songFile) {
+                    var defer = $q.defer();
+                    var query = new Parse.Query(History);
+                    query.equalTo('song', songFile);
+                    query.equalTo('singer', Parse.User.current());
+                    query.first({
+                        success: function(result) {
+                            if (result) {
+                                defer.resolve(result);
+                            } else {
+                                var hist = (new History());
+                                hist.set('song', songFile);
+                                hist.set('singer', user);
+                                defer.resolve(hist);
+                            }
+                        },
+                        error: function(error) {
+
+                            console.log(error);
+                            var hist = (new History());
+                            hist.set('song', songFile);
+                            hist.set('singer', user);
+                            defer.resolve(hist);
+                        }
+                    });
+                    return defer.promise;
+                };
+                checkWebRequest().then(function(webRequest) {
+                    webRequest.set('singer', user);
+                    var query = new Parse.Query(SongFile);
+                    query.get(id, {
+                        success: function(results) {
+                            var relation = webRequest.relation('requests');
+                            relation.add(results);
+                            webRequest.save();
+                            var userRel = Parse.User.current().relation('history');
+                            userRel.add(results);
+                            Parse.User.current().save();
+                            checkHistory(results).then(function(history) {
+                                history.addUnique('dateSung', new Date());
+                                history.save().then(function(obj) {
+
+                                    // user.addUnique('history',)
+                                    // hisRelation.add(obj);
+                                    // user.save();
+                                }, function(error) {
+                                    console.log(error);
+                                });
+                            });
+                            // queue.save();
+                        },
+                        error: function(error) {
+                            console.log(error);
+                        }
+                    });
+                });
+            },
+            getHistory: function() {
+                var user = Parse.User.current();
+                var relation = Parse.User.current().relation('history');
+                var defer = $q.defer();
+                relation.query().ascending('artist');
+                relation.query().find({
+                    success: function(result) {
+                        defer.resolve(result);
+                    },
+                    error: function(error) {
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
+
+            },
+            fetchSong: function(song) {
+                var defer = $q.defer();
+
+                song.fetch({
+                    success: function(result) {
+
+                        defer.resolve(result);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
+
+
+            },
+
             delFromSongbook: function(id) {
                 var user = Parse.User.current();
                 var relation = user.relation('songbook');

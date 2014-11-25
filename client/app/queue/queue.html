@@ -1,4 +1,27 @@
 <main-Menu></main-Menu>
 <div class="col-md-12">
-    This is the queue view.
+
+    <div class="widget">
+        <div class="widget-header">
+            Crab Bowl Queue
+            <div class="pull-right col-xs-2 small text-center" style="line-height:1;color:#800000;">Wait time(apx):
+                <br>
+                <span>{{queueCount*4}} mins</span>
+            </div>
+        </div>
+    </div>
+    <div class="widget-body">
+        <ol>
+            <li ng-repeat="request in queue" ng-class="{'bg-info': singerMatch(request.get('singer'))}">
+                <div ng-show="singerMatch(request.get('singer'))" class="bg-info small pull-right">Aprx {{request.get('singerOrder')*4}} mins.</div>{{request.get('singer')}}
+
+                <ul>
+                    <li ng-repeat="req in request.get('requests')">{{req.songName}}</li>
+                </ul>
+            </li>
+        </ol>
+
+    </div>
+</div>
+
 </div>
