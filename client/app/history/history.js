@@ -23,5 +23,9 @@ angular.module('kjmApp')
                 url: '/artist/:name',
                 templateUrl: 'app/catalog/artists.titles.named.html',
                 controller: 'CatalogNamedCtrl'
+            }).state('history.calendar', {
+                url: '/calendar',
+                templateUrl: 'app/history/calendar.html',
+                controller: 'HistoryCalendarCtrl'
             });
     });

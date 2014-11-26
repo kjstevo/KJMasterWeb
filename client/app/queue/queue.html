@@ -1,7 +1,38 @@
 <main-Menu></main-Menu>
 <div class="col-md-12">
+ <rd-widget><a href="#" ui-sref="main">
+            <rd-widget-header uisref="main" href="#" title="Home" icon="fa-home">
+                           <span>
+                    <h4>Live Crab Bowl Queue</h4>
+                </span>
+            </rd-widget-header>
 
-    <div class="widget">
+            <rd-widget-body>
+
+                <check-Login></check-Login>
+                <div ng-show="sessionUser.get('nick')" class="widget-content clearfix">
+                    <rd-loading ng-hide="queue">
+                    </rd-loading>
+
+                    <div ng-class="{hidden: !queue}" ng-hide="queue[0]">Ther are no songs in the queue at the moment. Add a request from the <a href="#" ui-sref="catalog.artists">catalog</a> or <a href="#" ui-sref="main">go home</a> for the main menu.
+                    </div>
+                    <ol>
+            <li ng-repeat="request in queue" ng-class="{'bg-info': singerMatch(request.get('singer'))}">
+                <div ng-show="singerMatch(request.get('singer'))" class="bg-info small pull-right">Aprx {{request.get('singerOrder')*4}} mins.</div>{{request.get('singer')}}
+
+                <ul>
+                    <li ng-repeat="req in request.get('requests')">{{req.songName}}</li>
+                </ul>
+            </li>
+        </ol>
+
+                </div>
+
+            </rd-widget-body>
+
+            <rd-widget-footer></rd-widget-footer>
+        </rd-widget>
+<!--     <div class="widget">
         <div class="widget-header">
             Crab Bowl Queue
             <div class="pull-right col-xs-2 small text-center" style="line-height:1;color:#800000;">Wait time(apx):
@@ -21,7 +52,7 @@
             </li>
         </ol>
 
-    </div>
+    </div> -->
 </div>
 
 </div>

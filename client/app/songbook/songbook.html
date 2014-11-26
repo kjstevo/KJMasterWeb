@@ -1,9 +1,41 @@
 <main-Menu></main-Menu>
 <div class="col-md-12">
-
+<check-Login></check-login>
     <ui-view>
-        <ul class="list-group">
+     <rd-widget><a href="#" ui-sref="main">
+            <rd-widget-header uisref="main" href="#" title="Home" icon="fa-home">
+                           <span>
+                    <h4>Personal Songbook</h4>
+                </span>
+            </rd-widget-header>
+
+            <rd-widget-body>
+
+                <check-Login></check-Login>
+                <div ng-show="sessionUser.get('nick')" class="widget-content clearfix">
+                    <rd-loading ng-hide="results">
+                    </rd-loading>
+
+                    <div ng-class="{hidden: !results}" ng-hide="results[0]">You haven't added any songs to your songbook yet.  Add songs from the <a href="#" ui-sref="catalog.artists">catalog</a> or <a href="#" ui-sref="main">go home</a> for the main menu.
+                    </div>
+                    <ul class="list-group">
+                        <a ng-show="results" class="list-group-item" ng-repeat="result in results" ui-sref="songbook.song({id: result.id})">{{result.name}}</a> 
+                    </ul>
+
+                </div>
+
+            </rd-widget-body>
+
+            <rd-widget-footer></rd-widget-footer>
+        </rd-widget>
+<!--  -->
+<!--  -->
+
+
+    <!--  -->
+    <!--  -->
+        <!-- <ul class="list-group">
             <a ng-show="results" class="col-xs-12 col-md-4 list-group-item text-justified" ng-repeat="result in results" ui-sref="songbook.song({id: result.id})">{{result.name}}</a> 
-        </ul>
+         </ul>-->
     </ui-view>
 </div>

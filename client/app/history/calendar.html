@@ -1,0 +1,41 @@
+<div class="col-xs-10 col-md-5">
+<div  style="display:inline-block;">
+       
+        <p class="input-group" >
+              <input placeholder="Starting Date" type="text" class="form-control igp" datepicker-popup="{{format}}" show-button-bar="false" ng-model="dt" is-open="opened"  datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+    </div>
+    <div class="col-xs-10 col-md-5">
+    <div  style="display:inline-block;">
+       
+        <p class="input-group" >
+              <input type="text" placeholder="Ending Date" show-button-bar="false" class="form-control igp" datepicker-popup="{{format}}" ng-model="dt2" is-open="opened2"  datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="Close" />
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="open2($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </p>
+        </div>
+    </div>
+    <button class="btn btn-primary col-xs-1 col-md-1" ng-click="findSongs(dt,dt2)">
+    	<label>Go</label>
+    </button>
+ <div ng-show="sessionUser.get('nick')">
+                    <rd-loading ng-hide="results">
+                    </rd-loading>
+                    <div class="widget col-xs-12" icon="fa-home"><div class="widget-header clearfix left-blk text-left"><h4>Search Results</h4></div><div class="panel-body">
+                    <div ng-class="{hidden: !results} panel-content" ng-hide="results[0]">There is no history to display. Perhaps try a wider date range. 
+                    	<ul><li><a href="#" ui-sref="history.import"> Import</a> your offline history. </li>
+                    		<li>Make requests from the <a href="#" ui-sref="catalog.artists">catalog</a>.</li>
+                    		<li> <a href="#" ui-sref="main">Go Home.</a></li>
+                    	</ul>
+                    </div>
+                    <ul class="list-group">
+                        <a class="list-group-item" ng-href="/history/song/{{result.id}}" ng-repeat="result in results">{{result.name}}</a>
+                    </ul>
+</div>
+</div>
+                </div>

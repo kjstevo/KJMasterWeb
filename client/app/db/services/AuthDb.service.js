@@ -198,6 +198,23 @@ angular.module('kjmApp')
              * @param  {Function|*} callback - optional, funciton(user)
              * @return {Object|Promise}
              */
+             getHistoryForDates:function(dt1,dt2){
+                var defer=$q.defer();
+                var query=new Parse.Query(History);
+                query.greaterThanOrEqualTo('createdAt',dt1);
+                query.lessThanOrEqualTo('createdAt',dt2);
+                query.equalTo('singer',Parse.User.current());
+                query.include('song');
+                query.find({
+                    success:function(results){
+                        defer.resolve(results);
+                    },
+                    error:function(error){
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
+             },
             getCurrentUser: function(callback) {
 
                 return safeCb(callback)(currentUser);

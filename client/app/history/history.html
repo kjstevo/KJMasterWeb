@@ -3,29 +3,30 @@
 <div class="col-md-12">
     <ui-view>
         <rd-widget>
-            <rd-widget-header title="Select a date" icon="fa-calendar">
+            <rd-widget-header href="history/calendar" uisref="history.calendar" title="Select a date" icon="fa-calendar">
                 <span>
                     <h4>Song History</h4>
                 </span>
             </rd-widget-header>
 
             <rd-widget-body>
-
                 <check-Login></check-Login>
+               
                 <div ng-show="sessionUser.get('nick')" class="widget-content clearfix">
                     <rd-loading ng-hide="results">
                     </rd-loading>
-                    <div ng-show="results" ng-hide="results[0]">There is no history to display. Request a song from the <a href="#" ui-sref="catalog.artists">catalog</a> or <a href="#" ui-sref="main">go home.</a>
+
+                    <div ng-class="{hidden: !results}" ng-hide="results[0]">There is no history to display. Request a song from the <a href="#" ui-sref="catalog.artists">catalog</a> or <a href="#" ui-sref="main">go home.</a>
                     </div>
                     <ul class="list-group">
                         <a class="list-group-item" ng-href="/history/song/{{result.id}}" ng-repeat="result in results">{{result.name}}</a>
                     </ul>
 
                 </div>
-
+           
             </rd-widget-body>
 
             <rd-widget-footer></rd-widget-footer>
         </rd-widget>
-    </ui-view>
+     </ui-view>
 </div>

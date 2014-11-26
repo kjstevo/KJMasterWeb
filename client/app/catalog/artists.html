@@ -1,16 +1,23 @@
 <div class="ui-view" autoscroll ng-swipe-left="swipeLeft('artist')" ng-swipe-right="swipeRight('artist')">
-    <row>
-        <div class="col-md-2 center-block">
-            <img class="img img-responsive pull-left" src="assets/images/artist2.png" alt="Artists">
 
-
-        </div>
-    </row>
-
-    <ul class="list-group">
-
-        <a ng-hide="results" class="col-xs-3 col-md-3 list-group-item text-center" ng-repeat="letter in letters" ui-sref="catalog.artists.letter({letter: letter})">
+        
+        <div class="media">
+  <div class="media-left">
+    <img class="img-responsive col-xs-4 col-md-3" src="assets/images/artist2.png" alt="Artists">
+  </div>
+  <div class="media-body col-xs-8"><span>
+   
+      <ul class="list-group">
+        <a ng-hide="results" class="col-xs-3 col-md-2 list-group-item text-center" style="border-radius:70px;" ng-repeat="letter in letters" ui-sref="catalog.artists.letter({letter: letter})">
             <span>{{letter}}</span>
         </a>
     </ul>
+</span>
+</div>
+</div>
+</div> 
+
+       
+
+   
 </div>
