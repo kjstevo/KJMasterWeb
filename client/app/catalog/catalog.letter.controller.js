@@ -14,6 +14,7 @@ angular.module('kjmApp')
 
         try {
             letter = $stateParams.letter;
+            $scope.letter=letter;
 
         } catch (error) {
             console.log(error);

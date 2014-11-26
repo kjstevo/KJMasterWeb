@@ -7,6 +7,6 @@
     </a>
 
     <ul class="list-group">
-        <a ng-show="results" class="col-xs-12 col-md-4 list-group-item text-justified" ng-repeat="result in results" ui-sref="catalog.{{type}}.song({id: result.id})">{{result.getBareFile()}}</a> 
+        <a ng-show="results" class="col-xs-12 col-md-4 list-group-item text-justified" ng-repeat="result in results" ui-sref="catalog.{{type}}.song({id: result.id})">{{result.getArtist()}} - {{result.getTitle()}} ({{result.getDiscNum()}})</a> 
     </ul>
 </ui-view>

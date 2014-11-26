@@ -16,7 +16,7 @@ angular.module('kjmApp')
                 'key',
                 'bareFile',
                 'filepath',
-                'discNo',
+                'discNum',
                 'track',
                 'artist',
                 'title'

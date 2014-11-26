@@ -70,7 +70,7 @@
     <div class="container">
         <row>
             <div class="col-xs-12">
-                <div id="page-wrapper" ui-show="!isViewLoading" ng-class="{'active': toggle}" ng-cloak>
+                <div id="page-wrapper" ng-show="!isViewLoading" ng-class="{'active': toggle}" ng-cloak>
                     <!-- Sidebar -->
                     <div id="sidebar-wrapper" ng-swipe-left="swipe(0)" ng-swipe-right="swipe(1)">
                         <ul class="sidebar">
@@ -78,39 +78,39 @@
                                 <a href="#" class="sidebar-title" ng-click="swipe(0)">KJ Master<span class="menu-icon glyphicon glyphicon-transfer"></span></a>
                             </li>
                             <li ng-repeat="item in menu" class="sidebar-list">
-                                <a ui-sref-active="current-state" ui-sref="{{item.state}}">{{item.title}}<span class="menu-icon" ng-class="item.icon"></span></a>
+                                <a ui-sref-active-eq="current-state" ui-sref="{{item.state}}">{{item.title}}<span class="menu-icon" ng-class="item.icon"></span></a>
                             </li>
                             <li class="separator"></li>
                             <li ng-show="sessionUser.get('nick')" class="sidebar-title">{{sessionUser.get('nick')}}'s Links
                                 <span class="fa fa-user menu-icon"></span>
                             </li>
                             <li ng-show="sessionUser.get('nick')" class="sidebar-list">
-                                <a ui-sref-active="current-state" href="/history">History<span class="fa fa-history menu-icon"></span></a>
+                                <a ui-sref-active-eq="current-state" href="/history">History<span class="fa fa-history menu-icon"></span></a>
                             </li>
-                            <li ui-sref-active="current-state" ng-show="sessionUser.get('nick')" class="sidebar-list">
+                            <li ui-sref-active-eq="current-state" ng-show="sessionUser.get('nick')" class="sidebar-list">
                                 <a href="/songbook">Songbook<span class="fa fa-bookmar menu-icon"></span></a>
                             </li>
-                            <li ui-sref-active="current-state" ng-hide="sessionUser.get('nick')" class="sidebar-list">
+                            <li ui-sref-active-eq="current-state" ng-hide="sessionUser.get('nick')" class="sidebar-list">
                                 <a ui-sref="login">Login<span class="fa fa-sign-in menu-icon"></span></a>
                             </li>
-                            <li ui-sref-active="current-state" ng-hide="sessionUser.get('nick')" class="sidebar-list">
+                            <li ui-sref-active-eq="current-state" ng-hide="sessionUser.get('nick')" class="sidebar-list">
                                 <a ui-sref="signup">Sign up<span class="fa fa-key menu-icon"></span></a>
                             </li>
                         </ul>
                         <div class="sidebar-footer">
                             <div ng-show="sessionUser" class="col-xs-4">
-                                <a ui-sref-active="current-state" ui-sref="settings">Account</a>
+                                <a ui-sref-active-eq="current-state" ui-sref="settings">Account</a>
                             </div>
-                            <div ui-sref-active="current-state" ng-show="sessionUser" class="col-xs-4">
+                            <div ui-sref-active-eq="current-state" ng-show="sessionUser" class="col-xs-4">
                                 <a ui-sref="logout">Logout</a>
                             </div>
-                            <div ui-sref-active="current-state" ng-hide="sessionUser.get('nick')" class="col-xs-4">
+                            <div ui-sref-active-eq="current-state" ng-hide="sessionUser.get('nick')" class="col-xs-4">
                                 <a ui-sref="login">Login</a>
                             </div>
-                            <div ui-sref-active="current-state" ng-hide="sessionUser.get('nick')" class="col-xs-4">
+                            <div ui-sref-active-eq="current-state" ng-hide="sessionUser.get('nick')" class="col-xs-4">
                                 <a ui-sref="signup">Signup</a>
                             </div>
-                            <div ui-sref-active="current-state" ng-show="isAdmin()" ui-sref-active="active">
+                            <div ui-sref-active-eq="current-state" ng-show="isAdmin()" ui-sref-active-eq="active">
                                 <a ui-sref="admin">Admin</a>
                             </div>
                         </div>

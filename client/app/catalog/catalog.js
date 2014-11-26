@@ -11,45 +11,27 @@ angular.module('kjmApp')
         }).state('catalog.artists', {
             url: '/artists',
             templateUrl: 'app/catalog/artists.html',
-            controller: 'CatalogCtrl',
-            options: {
-                justified: true
-            },
+            controller: 'CatalogCtrl'
         }).state('catalog.titles', {
             url: '/titles',
             templateUrl: 'app/catalog/titles.html',
-            controller: 'CatalogCtrl',
-            options: {
-                justified: true
-            },
+            controller: 'CatalogCtrl'
         }).state('catalog.artists.letter', {
             url: '/artists/:letter',
             templateUrl: 'app/catalog/artists.letter.html',
-            controller: 'CatalogLetterCtrl',
-            options: {
-                justified: true
-            },
+            controller: 'CatalogLetterCtrl'
         }).state('catalog.artists.artist', {
             url: '/artist/:name',
             templateUrl: 'app/catalog/artists.titles.named.html',
-            controller: 'CatalogNamedCtrl',
-            options: {
-                justified: true
-            },
+            controller: 'CatalogNamedCtrl'
         }).state('catalog.titles.letter', {
             url: '/titles/:letter',
             templateUrl: 'app/catalog/titles.letter.html',
-            controller: 'CatalogLetterCtrl',
-            options: {
-                justified: true
-            },
+            controller: 'CatalogLetterCtrl'
         }).state('catalog.titles.title', {
             url: '/title/:name',
             templateUrl: 'app/catalog/artists.titles.named.html',
-            controller: 'CatalogNamedCtrl',
-            options: {
-                justified: true
-            },
+            controller: 'CatalogNamedCtrl'
         }).state('catalog.search', {
             url: '/search',
             templateUrl: 'app/catalog/search.html',
@@ -57,7 +39,7 @@ angular.module('kjmApp')
         }).state('catalog.search.results', {
             url: '/results/:searchTerm',
             templateUrl: 'app/search/search.html',
-            controller: 'SearchCtrl',
+            controller: 'SearchCtrl'
         });
 
     });
