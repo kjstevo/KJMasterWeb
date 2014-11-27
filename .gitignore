@@ -16,3 +16,5 @@ local.0
 local.ns
 mongod.lock
 deploy.bat
+dep.bat
+serve.bat
