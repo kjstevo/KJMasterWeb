@@ -19,7 +19,7 @@
                     <div ng-class="{hidden: !results}" ng-hide="results[0]">You haven't added any songs to your songbook yet.  Add songs from the <a href="#" ui-sref="catalog.artists">catalog</a> or <a href="#" ui-sref="main">go home</a> for the main menu.
                     </div>
                     <ul class="list-group">
-                        <a ng-show="results" class="list-group-item" ng-repeat="result in results" ui-sref="songbook.song({id: result.id})">{{result.name}}</a> 
+                        <a ng-show="results" class="list-group-item" ng-repeat="result in results" ui-sref="song({id: result.id,lastState: currentState})">{{result.name}}</a> 
                     </ul>
 
                 </div>

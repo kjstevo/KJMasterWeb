@@ -616,6 +616,61 @@ angular.module('kjmApp')
                     });
                     return defer.promise;
                 };
+                var getWebRequest=function(){
+                    var query=new Parse.Query('WebRequest');
+                    var defer=$q.defer();
+                    query.equalTo('singer',Parse.User.current());
+                    query.first({
+                        success: function(result) {
+
+                            defer.resolve(result);
+                        },
+                        error: function(error) {
+                            console.log(error);
+                            defer.reject(error);
+                        }
+                    });
+                    return defer.promise;
+            };
+             var getQueueCount= function() {
+                var query = new Parse.Query(Queue);
+                var defer = $q.defer();
+                query.count({
+                    success: function(count) {
+                        defer.resolve(count);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
+
+            };
+                var addWebRequestToQueue=function(webrequest){
+                  
+                    getWebRequest().then(function(result){
+                            var queue=new Queue();
+                             var webRequests=queue.relation('webRequests');
+                            var singerName=Parse.User.current().get('nick');
+                            queue.set('singer',singerName);
+                             webRequests.add(result);
+                            getQueueCount().then(function(result){
+                                queue.set('singerOrder',result);
+                                queue.save();
+                            }, function(error){
+                                console.log(error);
+                            });
+
+                            
+                           
+                           
+                            
+                    },function(error){
+                        console.log(error);
+                    });
+                    
+                };
                 checkWebRequest().then(function(webRequest) {
                     webRequest.set('singer', user);
                     var query = new Parse.Query(SongFile);
@@ -623,7 +678,13 @@ angular.module('kjmApp')
                         success: function(results) {
                             var relation = webRequest.relation('requests');
                             relation.add(results);
-                            webRequest.save();
+                            webRequest.save().then(
+                                function(results){
+                                    addWebRequestToQueue(results);
+                                },function(error){
+                                    console.log(error);
+                                });
+
                             var userRel = Parse.User.current().relation('history');
                             userRel.add(results);
                             Parse.User.current().save();

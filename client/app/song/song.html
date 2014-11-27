@@ -1,6 +1,6 @@
 <main-Menu></main-Menu>
 <div class="col-xs-12">
-    <a ui-sref="^" href="#">
+    <a ng-show="lastState" ui-sref="{{lastState}}" href="#">
         <span class="glyphicon glyphicon-hand-left">
             <span>Back</span>
         </span>
@@ -11,9 +11,9 @@
         </div>
         <div class="widget-body">
 
-            <b>Artist:</b>  <a class="link" ng-href="catalog/artists/artist/{{artist}}">{{artist}}</a>
+            <b>Artist:</b>  <a class="link" ng-href="artist/{{artist}}">{{artist}}</a>
             <br>
-            <b>Title:</b>  <a class="link" ng-href="catalog/titles/title/{{title}}">{{title}}</a>
+            <b>Title:</b>  <a class="link" ng-href="title/{{title}}">{{title}}</a>
             <br>
             <b>Disc:</b> {{discNum}}
             <br>

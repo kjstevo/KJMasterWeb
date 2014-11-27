@@ -19,7 +19,7 @@
                     <div ng-class="{hidden: !results}" ng-hide="results[0]">There is no history to display. Request a song from the <a href="#" ui-sref="catalog.artists">catalog</a> or <a href="#" ui-sref="main">go home.</a>
                     </div>
                     <ul class="list-group">
-                        <a class="list-group-item" ng-href="/history/song/{{result.id}}" ng-repeat="result in results">{{result.name}}</a>
+                        <a class="list-group-item" ui-sref="song({id:result.id,lastState: currentState})" ng-repeat="result in results">{{result.name}}</a>
                     </ul>
 
                 </div>

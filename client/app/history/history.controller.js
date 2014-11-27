@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('kjmApp')
-    .controller('HistoryCtrl', function($scope, AuthDb, $q) {
+    .controller('HistoryCtrl', function($scope, AuthDb,$state) {
         $scope.title = 'Song History';
         if ($scope.sessionUser) {
+            $scope.currentState=$state.$current.self.name;
             AuthDb.getHistory().then(function(results) {
                 $scope.results = results.map(function(obj) {
                     return {

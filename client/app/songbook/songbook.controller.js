@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('kjmApp')
-    .controller('SongbookCtrl', function($scope, AuthDb) {
+    .controller('SongbookCtrl', function($scope, AuthDb,$state) {
         try {
+            $scope.currentState=$state.$current.self.name;
             AuthDb.retrieveSongbook().then(function(results) {
                 $scope.results = results.map(function(obj) {
                     return {
