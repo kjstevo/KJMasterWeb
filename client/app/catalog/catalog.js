@@ -20,11 +20,19 @@ angular.module('kjmApp')
             url: '/artists/:letter',
             templateUrl: 'app/catalog/artists.letter.html',
             controller: 'CatalogLetterCtrl'
+        }).state('artists', {
+            url: '/artists/:letter',
+            templateUrl: 'app/catalog/artists.letter.html',
+            controller: 'CatalogLetterCtrl'
         }).state('catalog.artists.artist', {
             url: '/artist/:name',
             templateUrl: 'app/catalog/artists.titles.named.html',
             controller: 'CatalogNamedCtrl'
         }).state('catalog.titles.letter', {
+            url: '/titles/:letter',
+            templateUrl: 'app/catalog/titles.letter.html',
+            controller: 'CatalogLetterCtrl'
+        }).state('titles', {
             url: '/titles/:letter',
             templateUrl: 'app/catalog/titles.letter.html',
             controller: 'CatalogLetterCtrl'

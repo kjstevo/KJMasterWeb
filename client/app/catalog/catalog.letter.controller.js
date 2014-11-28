@@ -5,9 +5,9 @@ angular.module('kjmApp')
         $scope.isLoading = true;
         var type = 'Title';
         var letter = 'A';
+        var stateName=$state.$current.self.name;
 
-
-        if ($state.$current.self.name === 'catalog.artists.letter') {
+        if ((stateName === 'catalog.artists.letter')|| (stateName === 'artists')) {
             type = 'Artist';
 
         }
@@ -22,6 +22,11 @@ angular.module('kjmApp')
 
         try { //start try
             var lcType = type.toLowerCase();
+            if (stateName.substr(0,7)==='catalog'){
+                $scope.prepend='catalog.' + lcType + 's.';
+            } else {
+                $scope.prepend='';
+            }
             $scope.backUrl = lcType + 's.' + letter;
             AuthDb.loadSongsByLetter(letter, type).then(function(results) {
                 $scope.results = results.map(function(obj) {

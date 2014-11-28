@@ -26,14 +26,15 @@ angular.module('kjmApp')
         // var performSearch = function(searchTerm) {
         //     alert(searchTerm);
         // };
-
-
+        
         $scope.searchClear = function() {
             $scope.searchTerm = '';
             //$scope.searchCollapsed = true;
         };
 
-
+        
+    
+           
 
         // $scope.clickSearch = function(searchCollapsed, searchTerm) {
         //     if (searchTerm) {
