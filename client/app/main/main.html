@@ -31,12 +31,12 @@
     <div class="widget">
         <div class="widget-header">
             Quicklist
-            <span class="small pull-right">edit</span>
+           <!--  <span class="small pull-right">edit</span> -->
         </div>
 
         <div class="widget-body">
             <ol>
-                <li ng-repeat="result in quickList">{{result.name}}</li>
+                <li ng-repeat="result in quickList"><a ui-sref="song({id:result.id, lastState:$state.$current.self.name})" href="#">{{result.name}}</a></li>
             </ol>
             <a ui-sref="songbook" class="small pull-right">view more</a>
         </div>

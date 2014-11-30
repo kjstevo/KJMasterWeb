@@ -26,18 +26,22 @@
             <label>Add Songbook</label>
         </button>
 
-        <button ng-show="isInSongbook" ng-click="delSongbook(id)" class="btn btn-primary">
+        <button ng-show="isInSongbook" ng-click="delSongbook(id)" class="btn btn-danger">
             <label>Remove Songbook</label>
         </button>
         <button ng-hide="isInQuickList" ng-click="addQuickList(id)" class="btn btn-primary">
             <label>Add Quick List</label>
         </button>
 
-        <button ng-show="isInQuickList" ng-click="delQuickList(id)" class="btn btn-primary">
+        <button ng-show="isInQuickList" ng-click="delQuickList(id)" class="btn btn-danger">
             <label>Remove Quick List</label>
         </button>
-        <button ng-click="request(id)" class="btn btn-primary">
+        <button ng-hide="isInRequestList"  ng-click="request(id)" class="btn btn-primary">
             <label>Request Now</label>
+        </button>
+
+        <button  ng-show="isInRequestList"  ng-click="delRequestList(id)" class="btn btn-danger">
+            <label>Remove Request</label>
         </button>
     </div>
     <div class="text-center" ng-hide="enableButtons">

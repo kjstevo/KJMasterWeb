@@ -478,6 +478,24 @@ angular.module('kjmApp')
                 });
                 return defer.promise;
             },
+            isInRequestList: function(songId){
+            var user = Parse.User.current();
+                var query = new Parse.Query(WebRequest);
+                var defer = $q.defer();
+                var song=new SongFile();
+                song.id=songId;
+                query.equalTo('requests',song);
+                query.equalTo('singer',Parse.User.current());
+                query.count({
+                    success: function(results) {
+                        defer.resolve(results);
+                    },
+                    error: function(error) {
+                        defer.reject(error);
+                    }
+                });
+                return defer.promise;
+            },
             addToQuickList: function(id) {
                 var user = Parse.User.current();
                 var relation = user.relation('quickList');
@@ -523,6 +541,32 @@ angular.module('kjmApp')
                         relation.remove(results);
                         user.save();
                         defer.resolve(relation);
+
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        defer.reject(error);
+                    }
+
+                });
+                return defer.promise;
+            },
+
+             delFromRequestList: function(id) {
+                var user = Parse.User.current();
+                    
+                var defer = $q.defer();
+                var query = new Parse.Query(WebRequest);
+                query.equalTo('singer',user);
+                var song=new SongFile();
+                song.id=id;
+                
+                query.first({
+                    success: function(results) {
+                        var relation=results.relation('requests');
+                        relation.remove(song)
+                        results.save();
+                        defer.resolve(results);
 
                     },
                     error: function(error) {
@@ -707,6 +751,7 @@ angular.module('kjmApp')
                     });
                 });
             },
+            
             getHistory: function() {
                 var user = Parse.User.current();
                 var relation = Parse.User.current().relation('history');

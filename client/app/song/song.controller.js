@@ -72,7 +72,15 @@ angular.module('kjmApp')
 
 
         };
+         $scope.delRequestList = function(id) {
+            AuthDb.delFromRequestList(id).then(function() {
+                $scope.isInRequestList = false;
+                $scope.addAlert('The request has been deleted from the queue.', 'info');
 
+            });
+
+
+        };
         $scope.addQuickList = function(id) {
             AuthDb.addToQuickList(id).then(function() {
                 $scope.isInQuickList = true;
@@ -93,7 +101,7 @@ angular.module('kjmApp')
         };
 
         $scope.isInQuickList = false;
-
+        $scope.isInRequestList=false;
         function checkQuickList() {
             AuthDb.isInQuickList($stateParams.id).then(function(results) {
                 if (results.get('key') > 0) {
@@ -104,6 +112,19 @@ angular.module('kjmApp')
                 }
             }, function(err) {
                 $scope.isInQuickList = false;
+            });
+        }
+
+        function checkRequestList() {
+            AuthDb.isInRequestList($stateParams.id).then(function(results) {
+                if (results > 0) {
+                    $scope.isInRequestList = true;
+
+                } else {
+                    $scope.isInRequestList = false;
+                }
+            }, function(err) {
+                $scope.isInRequestList = false;
             });
         }
 
@@ -124,6 +145,7 @@ angular.module('kjmApp')
             $scope.enableButtons = true;
             checkSongbook();
             checkQuickList();
+            checkRequestList();
         } else {
             $scope.enableButtons = false;
         }

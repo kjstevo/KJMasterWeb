@@ -21,8 +21,9 @@
                 <div ng-show="singerMatch(request.get('singer'))" class="bg-info small pull-right">Aprx {{request.get('singerOrder')*4}} mins.</div>{{request.get('singer')}}
 
                 <ul>
-                    <li ng-repeat="req in request.get('requests')">{{req.songName}}</li>
+                    <li ng-repeat="req in request.get('requests')">{{req.songName}}{{req.get('bareFile')}}</li>
                 </ul>
+                 
             </li>
         </ol>
 
