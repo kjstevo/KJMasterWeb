@@ -21,13 +21,14 @@
 //    });
 //   });
 angular.module('kjmApp')
-    .factory('User', function User($q) {
+    .factory('User', function User($q,Queue) {
 
 
         var User = Parse.Object.extend('User', {
             logout: function() {
                 return User.logOut();
             },
+
             listUsers: function() {
                 var defer = $q.defer();
 
@@ -48,6 +49,29 @@ angular.module('kjmApp')
         Object.defineProperty(User.prototype, 'nick', {
             get: function() {
                 return this.get('nick');
+            },
+            set: function(aValue) {
+                this.set('nick', aValue);
+            }
+        });
+        Object.defineProperty(User.prototype, 'requestListEntry', {
+            get: function() {
+                if(!angular.isDefined(this.get('requestListEntry'))){
+                    var queue=new Queue();
+                   var defer=$q.defer();
+                    queue.set('singer',this.get('nick'));
+                    queue.save().then(function(result){
+                        result.set('requestListEntry',result);
+                        result.save().then(function(user){
+                        var request=user.get('requestListEntry');
+                            defer.resolve(request);
+                        });    
+                    });
+                } else {
+                    var requst=this.get('requestListEntry');
+                    defer.resolve(request);
+                }
+                return defer.promise;
             },
             set: function(aValue) {
                 this.set('nick', aValue);

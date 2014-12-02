@@ -12,7 +12,8 @@ angular.module('kjmApp', [
         'parse-angular.enhance',
         'ParseServices',
         'ui.router.tabs',
-        'ui.unique'
+        'ui.unique',
+        
 
 
 

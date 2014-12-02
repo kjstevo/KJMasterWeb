@@ -36,11 +36,11 @@
         <button ng-show="isInQuickList" ng-click="delQuickList(id)" class="btn btn-danger">
             <label>Remove Quick List</label>
         </button>
-        <button ng-hide="isInRequestList"  ng-click="request(id)" class="btn btn-primary">
+        <button ng-disabled="isInRequestList" ng-hide="isInSelfRequestList"  ng-click="request(id)" class="btn btn-primary">
             <label>Request Now</label>
         </button>
 
-        <button  ng-show="isInRequestList"  ng-click="delRequestList(id)" class="btn btn-danger">
+        <button  ng-show="isInSelfRequestList"  ng-click="delRequestList(id)" class="btn btn-danger">
             <label>Remove Request</label>
         </button>
     </div>

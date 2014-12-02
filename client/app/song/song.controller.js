@@ -16,6 +16,7 @@ angular.module('kjmApp')
                         $scope.track = results.get('track');
                         $scope.key = results.get('key');
                         $scope.id = results.id;
+                        $scope.song=results;
 
 
                     }, function(err) {
@@ -36,6 +37,7 @@ angular.module('kjmApp')
                         $scope.track = results.get('track');
                         $scope.key = results.get('key');
                         $scope.id = results.id;
+                        $scope.song=results;
 
 
                     }, function(err) {
@@ -102,6 +104,7 @@ angular.module('kjmApp')
 
         $scope.isInQuickList = false;
         $scope.isInRequestList=false;
+        $scope.isInSelfRequestList=false;
         function checkQuickList() {
             AuthDb.isInQuickList($stateParams.id).then(function(results) {
                 if (results.get('key') > 0) {
@@ -114,17 +117,29 @@ angular.module('kjmApp')
                 $scope.isInQuickList = false;
             });
         }
-
-        function checkRequestList() {
-            AuthDb.isInRequestList($stateParams.id).then(function(results) {
+        function checkRequestList(){
+                AuthDb.isInRequestList($stateParams.id).then(function(results) {
                 if (results > 0) {
                     $scope.isInRequestList = true;
-
+                    
                 } else {
                     $scope.isInRequestList = false;
                 }
             }, function(err) {
                 $scope.isInRequestList = false;
+            });
+        }
+
+        function checkSelfRequestList() {
+            AuthDb.isInSelfRequestList($stateParams.id).then(function(results) {
+                if (results > 0) {
+                    $scope.isInSelfRequestList = true;
+                    
+                } else {
+                    $scope.isInSelfRequestList = false;
+                }
+            }, function(err) {
+                $scope.isInSelfRequestList = false;
             });
         }
 
@@ -146,6 +161,7 @@ angular.module('kjmApp')
             checkSongbook();
             checkQuickList();
             checkRequestList();
+            checkSelfRequestList();
         } else {
             $scope.enableButtons = false;
         }
@@ -169,7 +185,8 @@ angular.module('kjmApp')
             });
             modalInstance.result.then(function(confirmed) {
                 if (confirmed) {
-                    AuthDb.addToQueue($scope.id);
+                    //AuthDb.addToQueue($scope.id);
+                    AuthDb.addToQueue2($scope.song);
                     $scope.addAlert('Added to queue.', 'info');
                 } else {
                     $scope.addAlert('cancel', 'info');

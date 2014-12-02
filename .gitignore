@@ -5,7 +5,9 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
-parse
+parse/public
+parse/config
+parse/cloud/views/app
 ratchet
 client/app/ParseServices
 server

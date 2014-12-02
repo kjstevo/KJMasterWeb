@@ -15,15 +15,11 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
-    <!-- build:css(client) app/vendor.css -->
 
-    <!-- bower:css -->
-    <!-- endbower -->
-    <!-- endbuild -->
     <!-- build:css({.tmp,client}) app/app.css -->
 
 
-    <link rel="stylesheet" href="app/app.css">
+    <link rel="stylesheet" href="app/4f4f3808.app.css">
 
 
     <!-- injector:css -->
@@ -44,7 +40,7 @@
                 <div class="load-modal-inner">
                     <br>
                     <br>
-                    <img class="center-block" height="50px" src="assets/images/loader.gif" />
+                    <img class="center-block" height="50px" src="assets/images/c4ba0df1.loader.gif" />
                     <span>
                         <br>
                         <br>
@@ -123,7 +119,7 @@
                             <!-- Header Bar -->
                             <!-- End Header Bar -->
                             <!-- Begin Main Content -->
-                            <div ng-class="{hidden:!alerts[0]}" class="row alerts-container" data-ng-cloak data-ng-show="alerts.length">
+                            <div class="row alerts-container" data-ng-cloak data-ng-show="alerts.length">
                                 <div class="col-xs-12">
                                     <alert ng-show="alerts[0]" data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
                                 </div>
@@ -169,30 +165,10 @@
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
-    <!-- build:js({client,node_modules}) app/vendor.js -->
-    <!-- bower:js -->
-    <script src="bower_components/jquery/dist/jquery.js"></script>
-    <script src="bower_components/angular/angular.js"></script>
-    <script src="bower_components/angular-resource/angular-resource.js"></script>
-    <script src="bower_components/angular-cookies/angular-cookies.js"></script>
-    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
-    <script src="bower_components/lodash/dist/lodash.compat.js"></script>
-    <script src="bower_components/angular-socket-io/socket.js"></script>
-    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="bower_components/parse-angular-patch/dist/parse-angular.js"></script>
-    <script src="bower_components/parse-js-sdk/lib/parse.js"></script>
-    <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-    <script src="bower_components/angular-ui-router-tabs/src/ui-router-tabs.js"></script>
-    <script src="bower_components/angular-ui-utils/unique.js"></script>
-    <!-- endbower -->
-
-    <script src="socket.io-client/socket.io.js"></script>
-
-    <!-- endbuild -->
+    <script src="app/59277eb6.vendor.js"></script>
 
     <!-- build:js({.tmp,client}) app/app.js -->
-    <script src="app/app.js"></script>
+    <script src="app/165cd514.app.js"></script>
     <!-- injector:js -->
     <script src="app/ParseServices/ParseSDK/ParseSDK.service.js"></script>
     <script src="app/account/account.js"></script>
