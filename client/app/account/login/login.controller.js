@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kjmApp')
-    .controller('LoginCtrl', function($scope, $rootScope, $state, $window, AuthDb) {
+    .controller('LoginCtrl', function($scope, $state, $window, AuthDb) {
         $scope.user = {};
         $scope.errors = {};
 
@@ -36,7 +36,15 @@ angular.module('kjmApp')
         // });
 
 $scope.loginFacebook=function(){
-    AuthDb.loginFacebook();
+    AuthDb.loginFacebook({
+        success:function(result){
+            $state.go('main');
+        },
+        error:function(error){
+            $scope.addAlert('There was an error logging in.','danger');
+            console.log(error);
+        }
+    });
 };
         $scope.loginOauth = function(provider) {
             $window.location.href = '/auth/' + provider;

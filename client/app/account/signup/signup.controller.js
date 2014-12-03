@@ -44,10 +44,18 @@ angular.module('kjmApp')
 
                                 //alert('FB Request Successfully Sent!');
 
-                                var user = Parse.User.current();
+                                var user = $scope.sessionUser;
                                 var first=data.first_name;
                                 user.set('nick',first);
-                                user.save();
+                                user.save({
+                                    success:function(result){
+                                        $state.go('main');
+                                    },
+                                    error:function(error){
+                                        $scope.addAlert('There was an error signing up.', 'danger');
+                                        console.log(error);
+                                    }
+                                });
                                
                             
                             }, function(error) {
