@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE HTML>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
@@ -28,6 +28,14 @@
 </head>
 
 <body ng-app="kjmApp" ng-controller="MasterCtrl">
+    <div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&appId=803612006355911&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
@@ -119,7 +127,7 @@
                             <!-- Header Bar -->
                             <!-- End Header Bar -->
                             <!-- Begin Main Content -->
-                            <div class="row alerts-container" data-ng-cloak data-ng-show="alerts.length">
+                            <div ng-class="{hidden:!alerts[0]}" class="row alerts-container" data-ng-cloak data-ng-show="alerts.length">
                                 <div class="col-xs-12">
                                     <alert ng-show="alerts[0]" data-ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</alert>
                                 </div>
@@ -143,7 +151,7 @@
     </div>
     <!--End Container-->
 
-    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID 
     <script>
     (function(i, s, o, g, r, a, m) {
         i['GoogleAnalyticsObject'] = r;
@@ -159,7 +167,7 @@
 
     ga('create', 'UA-XXXXX-X');
     ga('send', 'pageview');
-    </script>
+    </script>-->
 
     <!--[if lt IE 9]>
     <script src="bower_components/es5-shim/es5-shim.js"></script>
@@ -168,57 +176,9 @@
     <script src="app/59277eb6.vendor.js"></script>
 
     <!-- build:js({.tmp,client}) app/app.js -->
-    <script src="app/165cd514.app.js"></script>
+    <script src="app/3e9a7de4.app.js"></script>
     <!-- injector:js -->
-    <script src="app/ParseServices/ParseSDK/ParseSDK.service.js"></script>
-    <script src="app/account/account.js"></script>
-    <script src="app/account/login/login.controller.js"></script>
-    <script src="app/account/settings/settings.controller.js"></script>
-    <script src="app/account/signup/signup.controller.js"></script>
-    <script src="app/admin/admin.controller.js"></script>
-    <script src="app/admin/admin.js"></script>
-    <script src="app/catalog/catalog.controller.js"></script>
-    <script src="app/catalog/catalog.js"></script>
-    <script src="app/catalog/catalog.letter.controller.js"></script>
-    <script src="app/catalog/catalog.named.controller.js"></script>
-    <script src="app/checkLogin/checkLogin.directive.js"></script>
-    <script src="app/dashboard/controllers/alerts-ctrl.js"></script>
-    <script src="app/dashboard/controllers/master-ctrl.js"></script>
-    <script src="app/dashboard/directives/loading.js"></script>
-    <script src="app/dashboard/directives/widget-body.js"></script>
-    <script src="app/dashboard/directives/widget-header.js"></script>
-    <script src="app/dashboard/directives/widget-headercal.js"></script>
-    <script src="app/dashboard/directives/widget.js"></script>
-    <script src="app/db/Models/history.js"></script>
-    <script src="app/db/Models/queue.js"></script>
-    <script src="app/db/Models/request.js"></script>
-    <script src="app/db/Models/songFile.js"></script>
-    <script src="app/db/Models/webRequest.js"></script>
-    <script src="app/db/services/AuthDb.service.js"></script>
-    <script src="app/faq/faq.controller.js"></script>
-    <script src="app/faq/faq.js"></script>
-    <script src="app/history/calendar.controller.js"></script>
-    <script src="app/history/history.controller.js"></script>
-    <script src="app/history/history.js"></script>
-    <script src="app/main/main.controller.js"></script>
-    <script src="app/main/main.js"></script>
-    <script src="app/menu/mainMenu.js"></script>
-    <script src="app/models/Song.js"></script>
-    <script src="app/queue/queue.controller.js"></script>
-    <script src="app/queue/queue.js"></script>
-    <script src="app/search/search.controller.js"></script>
-    <script src="app/song/song.controller.js"></script>
-    <script src="app/song/song.js"></script>
-    <script src="app/song/song.modal.controller.js"></script>
-    <script src="app/songbook/songbook.controller.js"></script>
-    <script src="app/songbook/songbook.js"></script>
-    <script src="components/auth/auth.service.js"></script>
-    <script src="components/auth/user.service.js"></script>
-    <script src="components/modal/modal.service.js"></script>
-    <script src="components/mongoose-error/mongoose-error.directive.js"></script>
-    <script src="components/navbar/navbar.controller.js"></script>
-    <script src="components/socket/socket.service.js"></script>
-    <!-- endinjector -->
+       <!-- endinjector -->
     <!-- endbuild -->
 </body>
 

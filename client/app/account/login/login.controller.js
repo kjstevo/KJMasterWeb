@@ -35,7 +35,9 @@ angular.module('kjmApp')
         //   $scope.errors.other = err.message;
         // });
 
-
+$scope.loginFacebook=function(){
+    AuthDb.loginFacebook();
+};
         $scope.loginOauth = function(provider) {
             $window.location.href = '/auth/' + provider;
         };

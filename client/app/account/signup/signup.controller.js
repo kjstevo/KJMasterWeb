@@ -38,7 +38,28 @@ angular.module('kjmApp')
         }; //end func
         $scope.loginFacebook=function(){
                     AuthDb.loginFacebook().then(function() {
-                            $state.go('main');
+                          FB.apiAngular(
+                                '/me')
+                            .then(function(data) {
+
+                                //alert('FB Request Successfully Sent!');
+
+                                var user = Parse.User.current();
+                                var first=data.first_name;
+                                user.set('nick',first);
+                                user.save();
+                               
+                            
+                            }, function(error) {
+
+                                //alert('FB Request Unsuccessful!');
+
+                               consol.log(error);
+                            
+                            });
+
+  
+                            // $state.go('main');
                         }, function(err) {
                             $scope.addAlert('There was an error signing up', 'danger');
                             console.log(err);

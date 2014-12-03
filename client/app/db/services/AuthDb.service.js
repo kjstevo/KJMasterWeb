@@ -571,9 +571,9 @@ angular.module('kjmApp')
                 Parse.FacebookUtils.logIn(null, {
                  success: function(user) {
                     if(!user.existed){
-                        Parse.FacebookUtils.api('/me', function(response) {
+                        FB.apiAngular('/me', function(response) {
+                        console.log(response);                      
                         user.set('nick',response.first_name);
-                        user.set('email',response.email);
                         user.set('role','user');
                         user.save();
 });
@@ -587,6 +587,7 @@ angular.module('kjmApp')
                      defer.reject(error);
                  }
              });
+                return defer.promise;
              },
 
             delFromQuickList: function(id) {

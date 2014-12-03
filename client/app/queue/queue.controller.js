@@ -25,7 +25,11 @@ angular.module('kjmApp')
             return w.toLowerCase();
         };
         $scope.singerMatch = function(singer) {
-            return (toLowerCase(singer) === toLowerCase($scope.sessionUser.get('nick')));
+            try{
+                return (toLowerCase(singer) === toLowerCase($scope.sessionUser.get('nick')));
+             }catch (error){
+              console.log(error); 
+             }   
         };
 
     });

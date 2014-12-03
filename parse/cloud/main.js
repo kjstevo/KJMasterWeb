@@ -6,7 +6,8 @@ Parse.Cloud.define('hello', function(request, response) {
 
 Parse.Cloud.afterSave('Request', function(request, response) { 
         var query = new Parse.Query('RequestListEntry');
-        var count=query.count();
+        var count=0;
+
         var filepath = request.object.get('filepath');
     	var songName = request.object.get('songName');
     	var singer = request.object.get('singer');
@@ -29,15 +30,22 @@ Parse.Cloud.afterSave('Request', function(request, response) {
 	            } else {
                     var RequestListEntry = Parse.Object.extend('RequestListEntry');
                     var req = new RequestListEntry();
+                    var count=function(){
+                    	var qu=new Parse.Query('RequestListEntry');
+                    	qu.count().then(function(cnt){
+                    		return cnt;
+                    	});
+                    };
                     req.set('singer',singer);
+                    req.set('singerOrder',count);
                     req.addUnique('requests', {
 				        'filePath': filepath,
 				        'singer': singer,
 				        'songId': 0,
 				        'songName': songName,
-				        'singerOrder': count
+				        
 				    });
-				    requests.save().then(
+				    req.save().then(
 				    	function() {
 								return;
 				    	  }, 
