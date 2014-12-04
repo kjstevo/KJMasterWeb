@@ -49,6 +49,16 @@ angular.module('kjmApp')
         } catch (error) {
             //$scope.addAlert('There was an error retrieving your songbook.  Check your internet connection.', 'danger');
         }
+         var toLowerCase = function(w) {
+            return w.toLowerCase();
+        };
+         $scope.singerMatch = function(singer) {
+            try{
+                return (toLowerCase(singer) === toLowerCase($scope.sessionUser.get('nick')));
+             }catch (error){
+              console.log(error); 
+             }   
+        };
 
         // $scope.awesomeThings = [];
 

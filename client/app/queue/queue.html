@@ -17,7 +17,7 @@
                     </div>
                     <ol>
             <li ng-repeat="request in queue" ng-class="{'bg-info': singerMatch(request.get('singer'))}">
-                <div ng-show="singerMatch(request.get('singer'))" class="bg-info small pull-right">Aprx {{request.get('singerOrder')*4}} mins.</div>{{request.get('singer')}}
+                <div ng-show="singerMatch(request.get('singer'))" class="bg-info small pull-right">Aprx {{queue.indexOf(request)*3.5}} mins.</div>{{request.get('singer')}}
 
                 <ul>
                     <li ng-repeat="req in request.get('requests')">{{req.songName}}{{req.get('bareFile')}}</li>
