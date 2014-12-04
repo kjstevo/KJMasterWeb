@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kjmApp')
-    .factory('RequestFromWeb', function($q,Request,SongFile) {
+    .factory('RequestFromWeb', function($q) {
         // Service logic
         // ...
 
@@ -55,10 +55,22 @@ angular.module('kjmApp')
             //     });
             //     return defer.promise;
             // },
+            create:function(singer,song,request,singerNames){
+              var _this=this;
+              _this.set('singer',singer);
+              _this.set('song',song);
+              _this.set('request',request);
+              _this.set('singerNames',singerNames);
+              return _this.save().then(function(object){
+                return object;
+              });
+            },
             addSinger: function(singerName) {
-                this.addUnique('singerNames', singerName);
-                this.save().then(
+                var _this=this;
+                _this.addUnique('singerNames', singerName);
+                return this.save().then(
                     function(result) {
+
                         return result;
                     },
                     function(error) {
@@ -68,8 +80,9 @@ angular.module('kjmApp')
                 );
             },
             removeSinger: function(singerName) {
-                this.remove('singerNames', singerName);
-                this.save().then(function(result) {
+              var _this=this;
+                _this.remove('singerNames', singerName);
+                return _this.save().then(function(result) {
                     return result;
                 }, function(error) {
                     console.log(error);
@@ -114,40 +127,8 @@ angular.module('kjmApp')
                     console.log(error);
                     return error;
                 }
-            },
-            createRequest:function() {
-                var defer = $q.defer();
-                var query=new Parse.Query(SongFile);
-                var song=this.get('song');     
-                var singerNames=this.get('singerNames');
-                query.get(song.id,{
-                  success:function(result){
-                      var songName=result.get('bareFile');
-                      var filepath=result.get('filepath');
-                      var singer=Parse.User.current();
-                      var songId=result.get('key');
-                      var request = (new Request());
-                      var singerName=singer.get('nick');
-                    
-                      if(singerNames){
-                        singerNames.forEach(function(name, index){
-                          singerName=singerName+'-'+name;
-                        });
-                      }                      
-                      request.set('singer',singerName);
-                      request.set('songName',songName);
-                      request.set('filePath',filepath);
-                      request.set('songId',songId);
-                      request.save();
-
-                      defer.resolve(request);
-                  },
-                  error:function(error){
-                      defer.reject(error);
-                      }
-                  });
-                return defer.promise;
             }
+
         });
         return RequestFromWeb;
     });

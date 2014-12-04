@@ -677,15 +677,17 @@ angular.module('kjmApp')
                             song.get('filepath'),
                             song.get('key')
                             );
-                var requestFromWeb=(new RequestFromWeb());
-                requestFromWeb.set('singer',user);
-                requestFromWeb.set('request',request);
-                requestFromWeb.set('song',song);
-                requestFromWeb.set('singerNames',[user.get('nick')]);
+                var requestFromWeb=(new RequestFromWeb())
+                        .create(
+                            user,
+                            song,
+                            request,
+                            [user.get('nick')]
+                            );
                return requestFromWeb.save()
-                    .then(function(object){
+                        .then(function(object){
                             return object;
-                    });
+                        });
 
                 
 
