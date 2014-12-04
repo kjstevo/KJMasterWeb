@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kjmApp')
-    .factory('AuthDb', function AuthDb($rootScope, $cookieStore, $q, ParseSDK, User, SongFile, Queue, WebRequest, History,Request) {
+    .factory('AuthDb', function AuthDb($rootScope, $cookieStore, $q, ParseSDK, User, SongFile, Queue, WebRequest, History,Request,Facebook,RequestFromWeb) {
         // Service logic
         // ...
 
@@ -566,22 +566,20 @@ angular.module('kjmApp')
                 return defer.promise;
             },
 
-            loginFacebook:function(){
+            loginFacebook:function(nick){
                 var defer=$q.defer();
                 Parse.FacebookUtils.logIn(null, {
                  success: function(user) {
-                    if(!user.existed){
-                        FB.apiAngular('/me', function(response) {
-                        console.log(response);                      
-                        user.set('nick',response.first_name);
-                        user.set('role','user');
-                        user.save();
-});
-                    }
-                      currentUser = user;
+                            currentUser = user;
                             $cookieStore.put('token', currentUser.getSessionToken());
                             $rootScope.sessionUser = currentUser;
-                            defer.resolve(currentUser);
+                    if(!user.existed){
+                        user.set('nick',nick);
+                        user.set('role','user');
+                        user.save();
+                    }
+                     
+                    defer.resolve(user);
                  },
                  error: function(user, error) {
                      defer.reject(error);
@@ -671,14 +669,41 @@ angular.module('kjmApp')
                 return defer.promise;
             },
             addToQueue2:function(song){
-                var request=new Request();
                 var user=Parse.User.current();
-                request.set('singer',user.get('nick'));
-                request.set('filePath',song.get('filepath'));
-                request.set('songId',parseInt(song.get('key')));
-                request.set('songName',song.get('bareFile'));
-                request.set('new',true);
-                request.save();
+               var request= (new Request())
+                        .create(
+                            song.get('bareFile'),
+                            user.get('nick'),
+                            song.get('filepath'),
+                            song.get('key')
+                            );
+                var requestFromWeb=(new RequestFromWeb());
+                requestFromWeb.set('singer',user);
+                requestFromWeb.set('request',request);
+                requestFromWeb.set('song',song);
+                requestFromWeb.set('singerNames',[user.get('nick')]);
+               return requestFromWeb.save()
+                    .then(function(object){
+                            return object;
+                    });
+
+                
+
+
+                // request.set('singer',user.get('nick'));
+                // request.set('filePath',song.get('filepath'));
+                // request.set('songId',parseInt(song.get('key')));
+                // request.set('songName',song.get('bareFile'));
+                // request.set('new',true);
+                // request.save().then(function(result){
+                // var webRequest=new WebRequest();
+                // webRequest.set('singer',Parse.User.current());
+                // webRequest.set('request',result);     
+                // },function(error){
+                //     console.log(error);
+                // }
+                // });
+               
 
             },
             addToQueue: function(id) {

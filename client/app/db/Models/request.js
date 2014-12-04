@@ -19,7 +19,17 @@ angular.module('kjmApp')
                 'filePath',
                 'songId'
 
-            ]
+            ],
+            create:function(songName,singerName,filePath,songId){
+                var _this=this;
+                _this.set('songName',songName);
+                _this.set('singerName',singerName);
+                _this.set('filePath',filePath);
+                _this.set('songId',songId);
+                return _this.save().then(function(object){
+                        return object;
+                });
+         }
 
         });
         //     // Instance methods
