@@ -609,31 +609,31 @@ angular.module('kjmApp')
                 return defer.promise;
             },
 
-             delFromRequestList: function(id) {
-                var user = Parse.User.current();
+            //  delFromRequestList: function(id) {
+            //     var user = Parse.User.current();
                     
-                var defer = $q.defer();
-                var query = new Parse.Query(WebRequest);
-                query.equalTo('singer',user);
-                var song=new SongFile();
-                song.id=id;
+            //     var defer = $q.defer();
+            //     var query = new Parse.Query(WebRequest);
+            //     query.equalTo('singer',user);
+            //     var song=new SongFile();
+            //     song.id=id;
                 
-                query.first({
-                    success: function(results) {
-                        var relation=results.relation('requests');
-                        relation.remove(song);
-                        results.save();
-                        defer.resolve(results);
+            //     query.first({
+            //         success: function(results) {
+            //             var relation=results.relation('requests');
+            //             relation.remove(song);
+            //             results.save();
+            //             defer.resolve(results);
 
-                    },
-                    error: function(error) {
-                        console.log(error);
-                        defer.reject(error);
-                    }
+            //         },
+            //         error: function(error) {
+            //             console.log(error);
+            //             defer.reject(error);
+            //         }
 
-                });
-                return defer.promise;
-            },
+            //     });
+            //     return defer.promise;
+            // },
             getQueueCount: function() {
                 var query = new Parse.Query(Queue);
                 var defer = $q.defer();
@@ -668,27 +668,30 @@ angular.module('kjmApp')
                 });
                 return defer.promise;
             },
-            addToQueue2:function(song){
-                var user=Parse.User.current();
-               var request= (new Request())
-                        .create(
-                            song.get('bareFile'),
-                            user.get('nick'),
-                            song.get('filepath'),
-                            song.get('key')
-                            );
-                var requestFromWeb=(new RequestFromWeb())
-                        .create(
-                            user,
-                            song,
-                            request,
-                            [user.get('nick')]
-                            );
-               return requestFromWeb.save()
-                        .then(function(object){
-                            return object;
-                        });
+            addToQueue2: function(song) {
+             var user = Parse.User.current();
+             var request = (new Request())
+                 .create(
+                     song.get('bareFile'),
+                     user.get('nick'),
+                     song.get('filepath'),
+                     parseInt(song.get('key'))
+                 ).then(function(request) {
+                     var requestFromWeb = (new RequestFromWeb())
+                         .create(
+                             user,
+                             song,
+                             request, [user.get('nick')]
+                         );
+                     return requestFromWeb.save()
+                         .then(function(object) {
+                             return object;
+                         });
 
+
+                 });
+
+              
                 
 
 

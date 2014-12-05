@@ -23,11 +23,12 @@ angular.module('kjmApp')
             create:function(songName,singerName,filePath,songId){
                 var _this=this;
                 _this.set('songName',songName);
-                _this.set('singerName',singerName);
+                _this.set('singer',singerName);
                 _this.set('filePath',filePath);
                 _this.set('songId',songId);
+                _this.set('new',true);
                 return _this.save().then(function(object){
-                        return object;
+                        return _this;
                 });
          }
 
