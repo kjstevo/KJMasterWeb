@@ -20,3 +20,5 @@ mongod.lock
 deploy.bat
 dep.bat
 serve.bat
+db/gamebase-dev.ns
+db/gamebase-dev.0
