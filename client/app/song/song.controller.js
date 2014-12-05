@@ -4,58 +4,120 @@ angular.module('kjmApp')
     .controller('SongCtrl', function($scope, $stateParams, AuthDb, $modal) {
         if ($stateParams.id || $stateParams.name) {
             //$scope.songId=$stateParams.songId;
+            var applyResults=function($scope,results){
+                $scope.artist = results.get('artist');
+                $scope.title = results.get('title');
+                $scope.discNum = results.get('discNum');
+                $scope.track = results.get('track');
+                $scope.key = results.get('key');
+                $scope.id = results.id;
+                $scope.song = results;
+                return results;
+
+                    };
+            var applyError=function($scope,err){
+                $scope.resultError = err;
+                $scope.addAlert('There was an error finding the song.  Please try again later.', 'danger');
+                $scope.resultError = 'There are no results to display.';
+                $scope.results = $scope.resultError;
+                console.log(err);
+                return err;
+            };
+
+//find song
             try { //start try
                 if ($stateParams.id) {
-
-                    $scope.lastState=$stateParams.lastState;
+                    
+                    $scope.lastState = $stateParams.lastState;
+                    
                     AuthDb.loadSongById($stateParams.id).then(function(results) {
-
-                        $scope.artist = results.get('artist');
-                        $scope.title = results.get('title');
-                        $scope.discNum = results.get('discNum');
-                        $scope.track = results.get('track');
-                        $scope.key = results.get('key');
-                        $scope.id = results.id;
-                        $scope.song=results;
-
+                        
+                        applyResults($scope,results);
 
                     }, function(err) {
-                        $scope.resultError = err;
-                        $scope.addAlert('There was an error finding the song.  Please try again later.', 'danger');
-                        $scope.resultError = 'There are no results to display.';
-                        $scope.results = $scope.resultError;
-                        console.log(err);
+                       
+                        applyError($scope,err);
                     });
 
                     //end code
                 } else {
                     AuthDb.loadSongByName($stateParams.name).then(function(results) {
-
-                        $scope.artist = results.get('artist');
-                        $scope.title = results.get('title');
-                        $scope.discNum = results.get('discNum');
-                        $scope.track = results.get('track');
-                        $scope.key = results.get('key');
-                        $scope.id = results.id;
-                        $scope.song=results;
-
+                        
+                        applyResults($scope,results);
 
                     }, function(err) {
-                        $scope.resultError = err;
-                        $scope.addAlert('There was an error finding the song.  Please try again later.', 'danger');
-                        $scope.resultError = 'There are no results to display.';
-                        $scope.results = $scope.resultError;
-                        console.log(err);
+                        
+                        applyError($scope,err);
+
                     });
                 }
-            } catch (error) {
-                $scope.addAlert('There was an error finding the song.  Please try again later.', 'danger');
-                $scope.resultError = 'There are no results to display.';
-                $scope.results = $scope.resultError;
-                console.log(error);
 
+            } catch (error) {
+                    applyError($scope,error);
             } //end try
+        } //end if
+
+
+
+
+      
+//button states
+        $scope.isInQuickList = false;
+        $scope.isInRequestList = false;
+        $scope.isInSelfRequestList = false;
+
+        function checkQuickList() {
+            AuthDb.isInQuickList($stateParams.id).then(function(results) {
+                if (results.get('key') > 0) {
+                    $scope.isInQuickList = true;
+
+                } else {
+                    $scope.isInQuickList = false;
+                }
+            }, function(err) {
+                $scope.isInQuickList = false;
+            });
         }
+
+        function checkRequestList() {
+            AuthDb.isInRequestList($stateParams.id).then(function(results) {
+                if (results > 0) {
+                    $scope.isInRequestList = true;
+
+                } else {
+                    $scope.isInRequestList = false;
+                }
+            }, function(err) {
+                $scope.isInRequestList = false;
+            });
+        }
+
+        function checkSelfRequestList() {
+            AuthDb.isInSelfRequestList($stateParams.id).then(function(results) {
+                if (results) {
+                    $scope.isInSelfRequestList = results;
+                }
+
+            }, function(err) {
+                $scope.isInSelfRequestList = false;
+                console.log(err);
+            });
+        }
+
+        function checkSongbook() {
+            AuthDb.isInSongbook($stateParams.id).then(function(results) {
+                if (results.get('key') > 0) {
+                    $scope.isInSongbook = true;
+                } else {
+                    $scope.isInSongbook = false;
+                }
+
+            }, function(err) {
+                $scope.isInSongbook = false;
+                console.log(err);
+            });
+        }
+  ///Button functions
         $scope.addSongbook = function(id) {
             AuthDb.addToSongbook(id).then(function() {
                 $scope.isInSongbook = true;
@@ -74,8 +136,8 @@ angular.module('kjmApp')
 
 
         };
-         $scope.delRequestList = function(id) {
-            AuthDb.delFromRequestList(id).then(function() {
+        $scope.delRequestList = function(requestFromWeb) {
+            AuthDb.delFromRequestList(requestFromWeb).then(function() {
                 $scope.isInRequestList = false;
                 $scope.addAlert('The request has been deleted from the queue.', 'info');
 
@@ -102,69 +164,6 @@ angular.module('kjmApp')
 
         };
 
-        $scope.isInQuickList = false;
-        $scope.isInRequestList=false;
-        $scope.isInSelfRequestList=false;
-        function checkQuickList() {
-            AuthDb.isInQuickList($stateParams.id).then(function(results) {
-                if (results.get('key') > 0) {
-                    $scope.isInQuickList = true;
-
-                } else {
-                    $scope.isInQuickList = false;
-                }
-            }, function(err) {
-                $scope.isInQuickList = false;
-            });
-        }
-        function checkRequestList(){
-                AuthDb.isInRequestList($stateParams.id).then(function(results) {
-                if (results > 0) {
-                    $scope.isInRequestList = true;
-                    
-                } else {
-                    $scope.isInRequestList = false;
-                }
-            }, function(err) {
-                $scope.isInRequestList = false;
-            });
-        }
-
-        function checkSelfRequestList() {
-            AuthDb.isInSelfRequestList($stateParams.id).then(function(results) {
-                if (results > 0) {
-                    $scope.isInSelfRequestList = true;
-                    
-                } else {
-                    $scope.isInSelfRequestList = false;
-                }
-            }, function(err) {
-                $scope.isInSelfRequestList = false;
-            });
-        }
-
-        function checkSongbook() {
-            AuthDb.isInSongbook($stateParams.id).then(function(results) {
-                if (results.get('key') > 0) {
-                    $scope.isInSongbook = true;
-                } else {
-                    $scope.isInSongbook = false;
-                }
-
-            }, function(err) {
-                $scope.isInSongbook = false;
-                console.log(err);
-            });
-        }
-        if ($scope.sessionUser !== null) {
-            $scope.enableButtons = true;
-            checkSongbook();
-            checkQuickList();
-            checkRequestList();
-            checkSelfRequestList();
-        } else {
-            $scope.enableButtons = false;
-        }
         $scope.request = function(id) {
             if (!$scope.sessionUser.get('nick')) {
                 $scope.addAlert('You must <a href="/login">login</a> or <a href="/signup">sign up</a> to perform that function', 'warning');
@@ -186,19 +185,47 @@ angular.module('kjmApp')
             modalInstance.result.then(function(confirmed) {
                 if (confirmed) {
                     //AuthDb.addToQueue($scope.id);
-                    AuthDb.addToQueue2($scope.song);
+                    AuthDb.addToQueue($scope.song);
+                   
                     $scope.addAlert('Added to queue.', 'info');
+                    checkSelfRequestList();
+
                 } else {
+                    
                     $scope.addAlert('cancel', 'info');
+
                 }
             });
 
         };
-if($stateParams.useName){
-      $scope.lastState=$stateParams.lastState+'({name:"'+ $stateParams.useName+'"})';
+        // end buttons
+
+        // check for login
+        if ($scope.sessionUser !== null) {
+      
+            $scope.enableButtons = true;
+            
+            checkSongbook();
+            checkQuickList();
+            checkRequestList();
+            checkSelfRequestList();
+
+        } else {
+            $scope.enableButtons = false;
+        }
+        //end button states 
+
         
-    }
-    
+       //back button link 
+        if ($stateParams.useName) {
+            $scope.lastState = 
+                $stateParams.lastState + 
+                '({name:"' + 
+                $stateParams.useName + 
+                '"})';
+
+        }
+//might be uneccessary delete prob
         $scope.tabData = [{
                 heading: 'Artists',
                 route: 'catalog.artists.song',

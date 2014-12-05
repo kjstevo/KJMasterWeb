@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kjmApp')
-    .factory('AuthDb', function AuthDb($rootScope, $cookieStore, $q, ParseSDK, User, SongFile, Queue, WebRequest, History,Request) {
+    .factory('AuthDb', function AuthDb($rootScope, $cookieStore, $q, ParseSDK, User, SongFile, Queue, WebRequest, History,Request,Facebook,RequestFromWeb) {
         // Service logic
         // ...
 
@@ -490,7 +490,7 @@ angular.module('kjmApp')
                     success:function(song){
                         var query = new Parse.Query(Request);
                         query.equalTo('songName',song.get('bareFile'));
-                      
+                        query.notEqualTo('delete',true);
                         query.count({
                             success: function(results) {
                                 defer.resolve(results);
@@ -512,24 +512,19 @@ angular.module('kjmApp')
                 var defer = $q.defer();
                 var song=new SongFile();
                 song.id=songId;
-                song.fetch({
-                    success:function(song){
-                        var query = new Parse.Query(Request);
-                        query.equalTo('songName',song.get('bareFile'));
-                        query.equalTo('singer',Parse.User.current().get('nick'));
-                        query.count({
-                            success: function(results) {
-                                defer.resolve(results);
-                            },
-                            error: function(error) {
-                                defer.reject(error);
-                            }
-                        });
-                    },error:function(error){
+                var query = new Parse.Query(RequestFromWeb);
+                query.equalTo('song',song);
+                query.equalTo('singer',Parse.User.current());
+                query.first({
+                    success: function(results) {                          
+                        defer.resolve(results);
+                    },
+                    error: function(error) {
                         defer.reject(error);
                     }
                 });
-                        return defer.promise;
+                    
+                return defer.promise;
             },
             addToQuickList: function(id) {
                 var user = Parse.User.current();
@@ -566,22 +561,20 @@ angular.module('kjmApp')
                 return defer.promise;
             },
 
-            loginFacebook:function(){
+            loginFacebook:function(nick){
                 var defer=$q.defer();
                 Parse.FacebookUtils.logIn(null, {
                  success: function(user) {
-                    if(!user.existed){
-                        FB.apiAngular('/me', function(response) {
-                        console.log(response);                      
-                        user.set('nick',response.first_name);
-                        user.set('role','user');
-                        user.save();
-});
-                    }
-                      currentUser = user;
+                            currentUser = user;
                             $cookieStore.put('token', currentUser.getSessionToken());
                             $rootScope.sessionUser = currentUser;
-                            defer.resolve(currentUser);
+                    if(!user.existed){
+                        user.set('nick',nick);
+                        user.set('role','user');
+                        user.save();
+                    }
+                     
+                    defer.resolve(user);
                  },
                  error: function(user, error) {
                      defer.reject(error);
@@ -611,30 +604,19 @@ angular.module('kjmApp')
                 return defer.promise;
             },
 
-             delFromRequestList: function(id) {
-                var user = Parse.User.current();
-                    
+             delFromRequestList: function(requestFromWeb) {
+                var user = Parse.User.current();       
                 var defer = $q.defer();
-                var query = new Parse.Query(WebRequest);
-                query.equalTo('singer',user);
-                var song=new SongFile();
-                song.id=id;
+                var request=requestFromWeb.get('request');
+                request.set('delete',true);
+                defer.resolve(request.save().then(function(res){
+                    return requestFromWeb.destroy().then(function(result){
+                        return result;    
+                    });
                 
-                query.first({
-                    success: function(results) {
-                        var relation=results.relation('requests');
-                        relation.remove(song);
-                        results.save();
-                        defer.resolve(results);
-
-                    },
-                    error: function(error) {
-                        console.log(error);
-                        defer.reject(error);
-                    }
-
-                });
+                }));
                 return defer.promise;
+               
             },
             getQueueCount: function() {
                 var query = new Parse.Query(Queue);
@@ -670,160 +652,172 @@ angular.module('kjmApp')
                 });
                 return defer.promise;
             },
-            addToQueue2:function(song){
-                var request=new Request();
-                var user=Parse.User.current();
-                request.set('singer',user.get('nick'));
-                request.set('filePath',song.get('filepath'));
-                request.set('songId',parseInt(song.get('key')));
-                request.set('songName',song.get('bareFile'));
-                request.set('new',true);
-                request.save();
+            addToQueue: function(song) {
+             var user = Parse.User.current();
+             var request = (new Request())
+                 .create(
+                     song.get('bareFile'),
+                     user.get('nick'),
+                     song.get('filepath'),
+                     parseInt(song.get('key'))
+                 ).then(function(request) {
+                     var requestFromWeb = (new RequestFromWeb())
+                         .create(
+                             user,
+                             song,
+                             request, [user.get('nick')]
+                         );
+                     return requestFromWeb.save()
+                         .then(function(object) {
+                             return object;
+                         });
 
+
+                 });
             },
-            addToQueue: function(id) {
-                var user = User.current();
-                var requestListEntry=user.requestListEntry;
+            // addToQueue: function(id) {
+            //     var user = User.current();
+            //     var requestListEntry=user.requestListEntry;
                 
-                var checkWebRequest = function() {
-                    var defer = $q.defer();
-                    var query = new Parse.Query(WebRequest);
-                    query.equalTo('singer', user);
+            //     var checkWebRequest = function() {
+            //         var defer = $q.defer();
+            //         var query = new Parse.Query(WebRequest);
+            //         query.equalTo('singer', user);
 
-                    query.first({
-                        success: function(result) {
-                            if (result) {
-                                defer.resolve(result);
-                            } else {
-                                defer.resolve((new WebRequest()));
-                            }
-                        },
-                        error: function(error) {
-                            console.log(error);
-                            defer.resolve((new WebRequest()));
-                        }
-                    });
-                    return defer.promise;
-                };
+            //         query.first({
+            //             success: function(result) {
+            //                 if (result) {
+            //                     defer.resolve(result);
+            //                 } else {
+            //                     defer.resolve((new WebRequest()));
+            //                 }
+            //             },
+            //             error: function(error) {
+            //                 console.log(error);
+            //                 defer.resolve((new WebRequest()));
+            //             }
+            //         });
+            //         return defer.promise;
+            //     };
 
-                var checkHistory = function(songFile) {
-                    var defer = $q.defer();
-                    var query = new Parse.Query(History);
-                    query.equalTo('song', songFile);
-                    query.equalTo('singer', Parse.User.current());
-                    query.first({
-                        success: function(result) {
-                            if (result) {
-                                defer.resolve(result);
-                            } else {
-                                var hist = (new History());
-                                hist.set('song', songFile);
-                                hist.set('singer', user);
-                                defer.resolve(hist);
-                            }
-                        },
-                        error: function(error) {
+            //     var checkHistory = function(songFile) {
+            //         var defer = $q.defer();
+            //         var query = new Parse.Query(History);
+            //         query.equalTo('song', songFile);
+            //         query.equalTo('singer', Parse.User.current());
+            //         query.first({
+            //             success: function(result) {
+            //                 if (result) {
+            //                     defer.resolve(result);
+            //                 } else {
+            //                     var hist = (new History());
+            //                     hist.set('song', songFile);
+            //                     hist.set('singer', user);
+            //                     defer.resolve(hist);
+            //                 }
+            //             },
+            //             error: function(error) {
 
-                            console.log(error);
-                            var hist = (new History());
-                            hist.set('song', songFile);
-                            hist.set('singer', user);
-                            defer.resolve(hist);
-                        }
-                    });
-                    return defer.promise;
-                };
-                var getWebRequest=function(){
-                    var query=new Parse.Query('WebRequest');
-                    var defer=$q.defer();
-                    query.equalTo('singer',Parse.User.current());
-                    query.first({
-                        success: function(result) {
+            //                 console.log(error);
+            //                 var hist = (new History());
+            //                 hist.set('song', songFile);
+            //                 hist.set('singer', user);
+            //                 defer.resolve(hist);
+            //             }
+            //         });
+            //         return defer.promise;
+            //     };
+            //     var getWebRequest=function(){
+            //         var query=new Parse.Query('WebRequest');
+            //         var defer=$q.defer();
+            //         query.equalTo('singer',Parse.User.current());
+            //         query.first({
+            //             success: function(result) {
 
-                            defer.resolve(result);
-                        },
-                        error: function(error) {
-                            console.log(error);
-                            defer.reject(error);
-                        }
-                    });
-                    return defer.promise;
-            };
-             var getQueueCount= function() {
-                var query = new Parse.Query(Queue);
-                var defer = $q.defer();
-                query.count({
-                    success: function(count) {
-                        defer.resolve(count);
-                    },
-                    error: function(error) {
-                        console.log(error);
-                        defer.reject(error);
-                    }
-                });
-                return defer.promise;
+            //                 defer.resolve(result);
+            //             },
+            //             error: function(error) {
+            //                 console.log(error);
+            //                 defer.reject(error);
+            //             }
+            //         });
+            //         return defer.promise;
+            // };
+            //  var getQueueCount= function() {
+            //     var query = new Parse.Query(Queue);
+            //     var defer = $q.defer();
+            //     query.count({
+            //         success: function(count) {
+            //             defer.resolve(count);
+            //         },
+            //         error: function(error) {
+            //             console.log(error);
+            //             defer.reject(error);
+            //         }
+            //     });
+            //     return defer.promise;
 
-            };
-                var addWebRequestToQueue=function(webrequest){
+            // };
+            //     var addWebRequestToQueue=function(webrequest){
                   
-                    getWebRequest().then(function(result){
-                            var queue=new Queue();
-                             var webRequests=queue.relation('webRequests');
-                            var singerName=Parse.User.current().get('nick');
-                            queue.set('singer',singerName);
-                             webRequests.add(result);
-                            getQueueCount().then(function(result){
-                                queue.set('singerOrder',result);
-                                queue.save();
-                            }, function(error){
-                                console.log(error);
-                            });
+            //         getWebRequest().then(function(result){
+            //                 var queue=new Queue();
+            //                  var webRequests=queue.relation('webRequests');
+            //                 var singerName=Parse.User.current().get('nick');
+            //                 queue.set('singer',singerName);
+            //                  webRequests.add(result);
+            //                 getQueueCount().then(function(result){
+            //                     queue.set('singerOrder',result);
+            //                     queue.save();
+            //                 }, function(error){
+            //                     console.log(error);
+            //                 });
 
                             
                            
                            
                             
-                    },function(error){
-                        console.log(error);
-                    });
+            //         },function(error){
+            //             console.log(error);
+            //         });
                     
-                };
-                checkWebRequest().then(function(webRequest) {
-                    webRequest.set('singer', user);
-                    var query = new Parse.Query(SongFile);
-                    query.get(id, {
-                        success: function(results) {
-                            var relation = webRequest.relation('requests');
-                            relation.add(results);
-                            webRequest.save().then(
-                                function(results){
-                                    addWebRequestToQueue(results);
-                                },function(error){
-                                    console.log(error);
-                                });
+            //     };
+            //     checkWebRequest().then(function(webRequest) {
+            //         webRequest.set('singer', user);
+            //         var query = new Parse.Query(SongFile);
+            //         query.get(id, {
+            //             success: function(results) {
+            //                 var relation = webRequest.relation('requests');
+            //                 relation.add(results);
+            //                 webRequest.save().then(
+            //                     function(results){
+            //                         addWebRequestToQueue(results);
+            //                     },function(error){
+            //                         console.log(error);
+            //                     });
 
-                            var userRel = Parse.User.current().relation('history');
-                            userRel.add(results);
-                            Parse.User.current().save();
-                            checkHistory(results).then(function(history) {
-                                history.addUnique('dateSung', new Date());
-                                history.save().then(function(obj) {
+            //                 var userRel = Parse.User.current().relation('history');
+            //                 userRel.add(results);
+            //                 Parse.User.current().save();
+            //                 checkHistory(results).then(function(history) {
+            //                     history.addUnique('dateSung', new Date());
+            //                     history.save().then(function(obj) {
 
-                                    // user.addUnique('history',)
-                                    // hisRelation.add(obj);
-                                    // user.save();
-                                }, function(error) {
-                                    console.log(error);
-                                });
-                            });
-                            // queue.save();
-                        },
-                        error: function(error) {
-                            console.log(error);
-                        }
-                    });
-                });
-            },
+            //                         // user.addUnique('history',)
+            //                         // hisRelation.add(obj);
+            //                         // user.save();
+            //                     }, function(error) {
+            //                         console.log(error);
+            //                     });
+            //                 });
+            //                 // queue.save();
+            //             },
+            //             error: function(error) {
+            //                 console.log(error);
+            //             }
+            //         });
+            //     });
+            // },
             
             getHistory: function() {
                 var user = Parse.User.current();
