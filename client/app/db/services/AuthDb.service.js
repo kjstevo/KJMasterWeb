@@ -506,12 +506,10 @@ angular.module('kjmApp')
                         return defer.promise;
                 
             },
-            isInSelfRequestList: function(songId){
+            isInSelfRequestList: function(song){
             var user = Parse.User.current();
                 
                 var defer = $q.defer();
-                var song=new SongFile();
-                song.id=songId;
                 var query = new Parse.Query(RequestFromWeb);
                 query.equalTo('song',song);
                 query.equalTo('singer',Parse.User.current());
@@ -633,6 +631,23 @@ angular.module('kjmApp')
                 return defer.promise;
 
             },
+            getRequests:function(){
+                  var query = new Parse.Query(RequestFromWeb);
+                var defer = $q.defer();
+                query.equalTo('singer',Parse.User.current());
+                query.include('song');
+                query.find({
+                    success: function(results) {
+                        defer.resolve(results);
+                    },
+                    error: function(error) {
+                        console.log(error);
+                        defer.reject(error);
+                    }
+
+                });
+                return defer.promise;
+            },
             getQueue: function(size) {
                 var query = new Parse.Query(Queue);
                 var defer = $q.defer();
@@ -653,7 +668,8 @@ angular.module('kjmApp')
                 return defer.promise;
             },
             addToQueue: function(song) {
-             var user = Parse.User.current();
+                var defer=$q.defer();
+           var user = Parse.User.current();
              var request = (new Request())
                  .create(
                      song.get('bareFile'),
@@ -661,19 +677,11 @@ angular.module('kjmApp')
                      song.get('filepath'),
                      parseInt(song.get('key'))
                  ).then(function(request) {
-                     var requestFromWeb = (new RequestFromWeb())
-                         .create(
-                             user,
-                             song,
-                             request, [user.get('nick')]
-                         );
-                     return requestFromWeb.save()
-                         .then(function(object) {
-                             return object;
-                         });
-
-
+                    defer.resolve(request);
+                 }, function(error){
+                    defer.reject(error);
                  });
+                 return defer.promise;
             },
             // addToQueue: function(id) {
             //     var user = User.current();

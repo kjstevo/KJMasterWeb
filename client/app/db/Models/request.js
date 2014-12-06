@@ -28,7 +28,10 @@ angular.module('kjmApp')
                 _this.set('songId',songId);
                 _this.set('new',true);
                 return _this.save().then(function(object){
-                        return _this;
+                        return object;
+                }, function(error){
+                    console.log(error);
+                    return error;
                 });
          }
 

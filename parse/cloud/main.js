@@ -3,9 +3,13 @@
 Parse.Cloud.define('hello', function(request, response) {
     response.success('Hello world!');
 });
-Parse.Cloud.beforeDelete('RequestFromWeb',function(request,response){
-    var req=request.object.get('request');
-    req.fetch().then(function(){
+Parse.Cloud.afterDelete('RequestFromWeb',function(request,response){
+    console.log('req object:  '+ request.object);
+    var req=Parse.Object.extend('Request');
+    req.id=request.object.get('request').id;
+    var query=new Parse.Query('Request');
+    query.get(req.id,{
+        success:function(req){   
             var singer=req.get('singer');
             var filepath=req.get('filePath');
             var songId=parseInt(req.get('songId'));
@@ -19,20 +23,30 @@ Parse.Cloud.beforeDelete('RequestFromWeb',function(request,response){
                         };
             var query=new Parse.Query('RequestListEntry');
             query.equalTo('singer',singer);
-            query.first().then(function(requests){       
+           return query.first().then(function(requests){       
                     if (requests) {
                         requests.remove('requests', song);
-                        requests.save().then(function() {
-                            response.success();
-                               }, function(error) {
-                            response.error(error.message);
-                        });
-                    }
+                      return requests.save().then(function(res) {
+                        if(!(requests.get('requests'))[0]){
+                            requests.destroy();
+                        }
+                            return res;      
+                    });
+                } else {
+                  return;
+                }
                 });
+           response.success();
+
+     }, error: function(error){
+            console.log(error.message);
+            response.error(error);
+     }
+ });
+
         });
+        
 
-
-});
 Parse.Cloud.afterSave('Request', function(request, response) { 
         var query = new Parse.Query('RequestListEntry');
         var count=0;
@@ -45,6 +59,7 @@ Parse.Cloud.afterSave('Request', function(request, response) {
         query.first({
             success: function(requests) {    	
                 if (requests) {
+                    console.log("found requests" + requests);
 				    requests.addUnique('requests', {
 				        'filePath': filepath,
 				        'singer': singer,
@@ -52,38 +67,43 @@ Parse.Cloud.afterSave('Request', function(request, response) {
 				        'songName': songName,
 
 				    });
-				    requests.save().then(function() {
-				    	response.success();
+				    return requests.save().then(function(reqs) {
+				    	return reqs;
 				    	   }, function(error) {
-				        response.error(error.message);
+				        return error;
 				    });
 	            } else {
-                    var RequestListEntry = Parse.Object.extend('RequestListEntry');
+                    console.log("creating new request");
+                   var qu=new Parse.Query('RequestListEntry');
+                    qu.count().then(function(cnt){
+                           var RequestListEntry = Parse.Object.extend('RequestListEntry');
                     var req = new RequestListEntry();
-                    var count=function(){
-                    	var qu=new Parse.Query('RequestListEntry');
-                    	qu.count().then(function(cnt){
-                    		return cnt;
-                    	});
-                    };
+                    
+                    console.log('setting variables singer:' + singer + '  singerOrder:' + cnt + '  filePath:' + filepath + '  name:' + songName + '   songId:' + songId);
                     req.set('singer',singer);
-                    req.set('singerOrder',count);
+                    req.set('singerOrder',cnt);
                     req.addUnique('requests', {
-				        'filePath': filePath,
-				        'singer': singer,
-				        'songId': 0,
-				        'songName': songName,
-				        
-				    });
-				    req.save().then(
-				    	function() {
-								return;
-				    	  }, 
-				    	function(error) {
-				        	return error;
-				    	}
-				    );
-                }
+                        'filePath': filepath,
+                        'singer': singer,
+                        'songId': songId,
+                        'songName': songName,
+                        
+                    });
+                    console.log('saving');
+                    return req.save().then(
+                        function(reqs) {
+                            console.log('returning: ' + reqs);
+                                return reqs;
+                          }, 
+                        function(error) {
+                            console.log(error);
+                            return error;
+                        }
+                    );          
+                        });
+                    };
+                 
+             
 
             },
             error: function(error) {
