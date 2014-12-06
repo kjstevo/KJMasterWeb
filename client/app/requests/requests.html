@@ -1,0 +1,29 @@
+<main-Menu></main-Menu><div class="col-md-12">
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-xs-12">
+            <div class="widget">
+                <div class="widget-header">
+                    <h3>Your Current Requests</h3>
+                </div>
+                <div class="widget-body">
+
+                    <rd-loading  class="col-xs-12 center-block" ng-hide="requests"></rd-loading>
+                    <div data-ng-show="searchError">
+                        <span>{{searchError}}</span>
+
+                    </div>
+                    <div ng-show="requests" ng-hide="requests[0]">There are no results to display.</div>
+                 
+                    <ul class="list-group">
+                        <a ui-sref="song({id:song.get('song').id,lastState:'requests'})" href="#" ng-repeat="song in requests" class="list-group-item" ng-hide="searchError">{{song.get('song').get('artist')}} - {{song.get('song').get('title')}}</a>
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+</div>
