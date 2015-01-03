@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kjmApp')
-    .factory('AuthDb', function AuthDb($rootScope, $cookieStore, $q, ParseSDK, User, SongFile, Queue, WebRequest, History,Request,Facebook,RequestFromWeb) {
+    .factory('AuthDb', function AuthDb($rootScope, $cookieStore, $q, ParseSDK, User, SongFile, Queue, WebRequest, History, Request, Facebook, RequestFromWeb) {
         // Service logic
         // ...
 
@@ -22,17 +22,24 @@ angular.module('kjmApp')
             return currentUser;
         };
 
+        try {
+            if (angular.isDefined($cookieStore.get('token'))) {
 
-        if (angular.isDefined($cookieStore.get('token'))) {
-            try {
                 var token = $cookieStore.get('token');
                 Parse.User.become(token);
                 currentUser = Parse.User.current();
 
-            } catch (error) {
-                console.log(error);
             }
+        } catch (error) {
+
+            console.log(error);
+            Parse.User.logOut();
+
+            currentUser = {};
+            $rootScope.sessionUser = null;
+            $cookieStore.remove('token');
         }
+
 
 
 
@@ -65,6 +72,17 @@ angular.module('kjmApp')
              * @param  {Function} callback - optional, function(error)
              * @return {Promise}
              */
+            loginFacebook: function(user) {
+                currentUser = Parse.User.current();
+                $cookieStore.put('token', currentUser.getSessionToken());
+                $rootScope.sessionUser = currentUser;
+
+
+
+                return currentUser;
+
+            },
+
             login: function(email, password) {
                 var defer = $q.defer();
                 Parse.User.logIn(email, password, {
@@ -106,7 +124,16 @@ angular.module('kjmApp')
             /**
              * Delete access token and user info
              */
-
+            changeNick: function(nick) {
+                var user = Parse.User.current();
+                user.set('nick', nick);
+                return user.save().then(function(result) {
+                    return result;
+                }, function(error) {
+                    console.log(error);
+                    return;
+                });
+            },
             getUsers: function() {
                 if (this.isAdmin()) {
 
@@ -200,23 +227,23 @@ angular.module('kjmApp')
              * @param  {Function|*} callback - optional, funciton(user)
              * @return {Object|Promise}
              */
-             getHistoryForDates:function(dt1,dt2){
-                var defer=$q.defer();
-                var query=new Parse.Query(History);
-                query.greaterThanOrEqualTo('createdAt',dt1);
-                query.lessThanOrEqualTo('createdAt',dt2);
-                query.equalTo('singer',Parse.User.current());
+            getHistoryForDates: function(dt1, dt2) {
+                var defer = $q.defer();
+                var query = new Parse.Query(History);
+                query.greaterThanOrEqualTo('createdAt', dt1);
+                query.lessThanOrEqualTo('createdAt', dt2);
+                query.equalTo('singer', Parse.User.current());
                 query.include('song');
                 query.find({
-                    success:function(results){
+                    success: function(results) {
                         defer.resolve(results);
                     },
-                    error:function(error){
+                    error: function(error) {
                         defer.reject(error);
                     }
                 });
                 return defer.promise;
-             },
+            },
             getCurrentUser: function(callback) {
 
                 return safeCb(callback)(currentUser);
@@ -480,17 +507,17 @@ angular.module('kjmApp')
                 });
                 return defer.promise;
             },
-             isInRequestList: function(songId){
-           var user = Parse.User.current();
-                
+            isInRequestList: function(songId) {
+                var user = Parse.User.current();
+
                 var defer = $q.defer();
-                var song=new SongFile();
-                song.id=songId;
+                var song = new SongFile();
+                song.id = songId;
                 song.fetch({
-                    success:function(song){
+                    success: function(song) {
                         var query = new Parse.Query(Request);
-                        query.equalTo('songName',song.get('bareFile'));
-                        query.notEqualTo('delete',true);
+                        query.equalTo('songName', song.get('bareFile'));
+                        query.notEqualTo('delete', true);
                         query.count({
                             success: function(results) {
                                 defer.resolve(results);
@@ -499,29 +526,30 @@ angular.module('kjmApp')
                                 defer.reject(error);
                             }
                         });
-                    },error:function(error){
+                    },
+                    error: function(error) {
                         defer.reject(error);
                     }
                 });
-                        return defer.promise;
-                
+                return defer.promise;
+
             },
-            isInSelfRequestList: function(song){
-            var user = Parse.User.current();
-                
+            isInSelfRequestList: function(song) {
+                var user = Parse.User.current();
+
                 var defer = $q.defer();
                 var query = new Parse.Query(RequestFromWeb);
-                query.equalTo('song',song);
-                query.equalTo('singer',Parse.User.current());
+                query.equalTo('song', song);
+                query.equalTo('singer', Parse.User.current());
                 query.first({
-                    success: function(results) {                          
+                    success: function(results) {
                         defer.resolve(results);
                     },
                     error: function(error) {
                         defer.reject(error);
                     }
                 });
-                    
+
                 return defer.promise;
             },
             addToQuickList: function(id) {
@@ -559,27 +587,7 @@ angular.module('kjmApp')
                 return defer.promise;
             },
 
-            loginFacebook:function(nick){
-                var defer=$q.defer();
-                Parse.FacebookUtils.logIn(null, {
-                 success: function(user) {
-                            currentUser = user;
-                            $cookieStore.put('token', currentUser.getSessionToken());
-                            $rootScope.sessionUser = currentUser;
-                    if(!user.existed){
-                        user.set('nick',nick);
-                        user.set('role','user');
-                        user.save();
-                    }
-                     
-                    defer.resolve(user);
-                 },
-                 error: function(user, error) {
-                     defer.reject(error);
-                 }
-             });
-                return defer.promise;
-             },
+
 
             delFromQuickList: function(id) {
                 var user = Parse.User.current();
@@ -602,19 +610,19 @@ angular.module('kjmApp')
                 return defer.promise;
             },
 
-             delFromRequestList: function(requestFromWeb) {
-                var user = Parse.User.current();       
+            delFromRequestList: function(requestFromWeb) {
+                var user = Parse.User.current();
                 var defer = $q.defer();
-                var request=requestFromWeb.get('request');
-                request.set('delete',true);
-                defer.resolve(request.save().then(function(res){
-                    return requestFromWeb.destroy().then(function(result){
-                        return result;    
+                var request = requestFromWeb.get('request');
+                request.set('delete', true);
+                defer.resolve(request.save().then(function(res) {
+                    return requestFromWeb.destroy().then(function(result) {
+                        return result;
                     });
-                
+
                 }));
                 return defer.promise;
-               
+
             },
             getQueueCount: function() {
                 var query = new Parse.Query(Queue);
@@ -631,11 +639,14 @@ angular.module('kjmApp')
                 return defer.promise;
 
             },
-            getRequests:function(){
-                  var query = new Parse.Query(RequestFromWeb);
+            getRequests: function(includeSinger) {
+                var query = new Parse.Query(RequestFromWeb);
                 var defer = $q.defer();
-                query.equalTo('singer',Parse.User.current());
+                query.equalTo('singer', Parse.User.current());
                 query.include('song');
+                if (angular.isDefined(includeSinger)) {
+                    query.include('singer');
+                }
                 query.find({
                     success: function(results) {
                         defer.resolve(results);
@@ -648,6 +659,23 @@ angular.module('kjmApp')
                 });
                 return defer.promise;
             },
+            getUserFromQueue: function(singerName) {
+                var query = new Parse.Query(RequestFromWeb);
+                var defer = $q.defer();
+                var name = singerName;
+                query.include('singer');
+                query.containsAll('singerNames', name);
+                query.first().then(function(result) {
+                    if (result) {
+                        console.log(result);
+                        defer.resolve(result);
+                    }
+                }, function(error) {
+                    console.log(error);
+                    defer.reject(error);
+                });
+                return defer.promise;
+            },
             getQueue: function(size) {
                 var query = new Parse.Query(Queue);
                 var defer = $q.defer();
@@ -655,6 +683,7 @@ angular.module('kjmApp')
                     query.limit(5);
                 }
                 query.ascending('singerOrder');
+
                 query.find({
                     success: function(results) {
                         defer.resolve(results);
@@ -668,25 +697,25 @@ angular.module('kjmApp')
                 return defer.promise;
             },
             addToQueue: function(song) {
-                var defer=$q.defer();
-           var user = Parse.User.current();
-             var request = (new Request())
-                 .create(
-                     song.get('bareFile'),
-                     user.get('nick'),
-                     song.get('filepath'),
-                     parseInt(song.get('key'))
-                 ).then(function(request) {
-                    defer.resolve(request);
-                 }, function(error){
-                    defer.reject(error);
-                 });
-                 return defer.promise;
+                var defer = $q.defer();
+                var user = Parse.User.current();
+                var request = (new Request())
+                    .create(
+                        song.get('bareFile'),
+                        user.get('nick'),
+                        song.get('filepath'),
+                        parseInt(song.get('key'))
+                    ).then(function(request) {
+                        defer.resolve(request);
+                    }, function(error) {
+                        defer.reject(error);
+                    });
+                return defer.promise;
             },
             // addToQueue: function(id) {
             //     var user = User.current();
             //     var requestListEntry=user.requestListEntry;
-                
+
             //     var checkWebRequest = function() {
             //         var defer = $q.defer();
             //         var query = new Parse.Query(WebRequest);
@@ -767,7 +796,7 @@ angular.module('kjmApp')
 
             // };
             //     var addWebRequestToQueue=function(webrequest){
-                  
+
             //         getWebRequest().then(function(result){
             //                 var queue=new Queue();
             //                  var webRequests=queue.relation('webRequests');
@@ -781,14 +810,14 @@ angular.module('kjmApp')
             //                     console.log(error);
             //                 });
 
-                            
-                           
-                           
-                            
+
+
+
+
             //         },function(error){
             //             console.log(error);
             //         });
-                    
+
             //     };
             //     checkWebRequest().then(function(webRequest) {
             //         webRequest.set('singer', user);
@@ -826,11 +855,26 @@ angular.module('kjmApp')
             //         });
             //     });
             // },
-            
-            getHistory: function() {
-                var user = Parse.User.current();
-                var relation = Parse.User.current().relation('history');
+
+            getHistory: function(options) {
+                var user = new User();
                 var defer = $q.defer();
+                if (angular.isDefined(options)) {
+                    if (options.type === 'id') {
+                        user.id = options.id;
+                    }
+                    if (options.type === 'name') {
+
+                    }
+                    if (options.type === 'none') {
+                        user = Parse.User.current();
+                    }
+                } else {
+                    user = Parse.User.current();
+                }
+
+                var relation = user.relation('history');
+
                 relation.query().ascending('artist');
                 relation.query().find({
                     success: function(result) {

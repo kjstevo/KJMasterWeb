@@ -23,6 +23,14 @@ angular.module('kjmApp')
                 url: '/artist/:name',
                 templateUrl: 'app/catalog/artists.titles.named.html',
                 controller: 'CatalogNamedCtrl'
+            }).state('history.id', {
+                url: '/history/id/:id',
+                templateUrl: 'app/history/history.html',
+                controller: 'HistoryCtrl'
+            }).state('history.name', {
+                url: '/history/name/:name',
+                templateUrl: 'app/history/history.html',
+                controller: 'HistoryCtrl'            
             }).state('history.calendar', {
                 url: '/calendar',
                 templateUrl: 'app/history/calendar.html',

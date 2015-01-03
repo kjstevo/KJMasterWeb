@@ -4,7 +4,7 @@ angular.module('kjmApp')
     .controller('LoginCtrl', function($scope, $state, $window, AuthDb) {
         $scope.user = {};
         $scope.errors = {};
-
+        $state.go('signup');
         $scope.login = function(form) {
             $scope.submitted = true;
             if (form.$valid) {
@@ -35,17 +35,17 @@ angular.module('kjmApp')
         //   $scope.errors.other = err.message;
         // });
 
-$scope.loginFacebook=function(){
-    AuthDb.loginFacebook({
-        success:function(result){
-            $state.go('main');
-        },
-        error:function(error){
-            $scope.addAlert('There was an error logging in.','danger');
-            console.log(error);
-        }
-    });
-};
+        $scope.loginFacebook = function() {
+            AuthDb.loginFacebook({
+                success: function(result) {
+                    $state.go('main');
+                },
+                error: function(error) {
+                    $scope.addAlert('There was an error logging in.', 'danger');
+                    console.log(error);
+                }
+            });
+        };
         $scope.loginOauth = function(provider) {
             $window.location.href = '/auth/' + provider;
         };

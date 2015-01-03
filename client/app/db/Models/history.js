@@ -1,7 +1,7 @@
 'use strict';
 // we isolate our data module so we can reuse them independently
 angular.module('kjmApp')
-    .factory('History', function($q) {
+    .factory('History', function($q, SongFile, User) {
 
         // --------------------------
         // Monster Object Definition

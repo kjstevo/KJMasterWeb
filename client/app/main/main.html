@@ -13,19 +13,25 @@
 </div>
 <!-- <div class="jumbotron" ng-swipe-left="swipe(0)"> -->
 <div class="row col-md-6">
-    <div class="widget">
+    <div class="list-group-item" >
+    <div href="#" ng-click="$state.go('queue')" class="widget">
+       
         <div class="widget-header">
             Crab Bowl Queue
         </div>
+    </a>
         <div class="widget-body">
 
             <ol>
-                <li ng-repeat="request in queue" ng-class="{'bg-info': singerMatch(request.get('singer'))}">
-                <div ng-show="singerMatch(request.get('singer'))" class="bg-info small pull-right">Aprx {{queue.indexOf(request)*3.5}} mins.</div>{{request.get('singer')}}</li>
+                <li ng-hide="singerMatch(request.get('singer'))" ng-repeat="request in queue" ng-class="{'bg-info': singerMatch(request.get('singer'))}">{{request.get('singer')}}</li>
+
+                <li ng-show="singerMatch(request.get('singer'))" ng-repeat="request in queue" ng-class="{'bg-info': singerMatch(request.get('singer'))}">
+                <a href="#" ui-sref="requests" ><div  class="label label-success small pull-right">Aprx {{queue.indexOf(request)*3.5}} mins.</div>{{request.get('singer')}}</a></li>
             </ol>
             <a ui-sref="queue" class="small pull-right">view more</a>
         </div>
     </div>
+</div>
 </div>
 <div class="col-md-6">
     <div class="widget">

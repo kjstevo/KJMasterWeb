@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kjmApp')
-    .factory('RequestFromWeb', function($q) {
+    .factory('RequestFromWeb', function($q, User, SongFile, Request) {
         // Service logic
         // ...
 
@@ -55,18 +55,24 @@ angular.module('kjmApp')
             //     });
             //     return defer.promise;
             // },
-            create:function(singer,song,request,singerNames){
-              var _this=this;
-              _this.set('singer',singer);
-              _this.set('song',song);
-              _this.set('request',request);
-              _this.set('singerNames',singerNames);
-              return _this.save().then(function(object){
-                return object;
-              });
+            create: function(singer, song, request, singerNames) {
+                var _this = this;
+                _this.set('singer', singer);
+                _this.set('song', song);
+                _this.set('request', request);
+                _this.set('singerNames', singerNames);
+                var defer = $q.defer();
+                var saved = _this.save().then(function(object) {
+                    defer.resolve(object);
+                }, function(error) {
+                    console.log(error);
+                    defer.reject(error);
+                });
+
+                return defer.promise;
             },
             addSinger: function(singerName) {
-                var _this=this;
+                var _this = this;
                 _this.addUnique('singerNames', singerName);
                 return this.save().then(
                     function(result) {
@@ -80,7 +86,7 @@ angular.module('kjmApp')
                 );
             },
             removeSinger: function(singerName) {
-              var _this=this;
+                var _this = this;
                 _this.remove('singerNames', singerName);
                 return _this.save().then(function(result) {
                     return result;
@@ -115,7 +121,7 @@ angular.module('kjmApp')
                     return error;
                 }
             },
-            isRequest:function(request) {
+            isRequest: function(request) {
                 try {
                     if (request.id === this.get('request').id) {
                         return true;

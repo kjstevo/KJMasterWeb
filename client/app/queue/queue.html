@@ -1,50 +1,40 @@
 <main-Menu></main-Menu>
 <div class="col-md-12">
- <rd-widget><a href="#" ui-sref="main">
-            <rd-widget-header uisref="main" href="#" title="Home" icon="fa-home">
-                           <span>
-                    <h4>Live Crab Bowl Queue</h4>
-                </span>
+    <div ng-repeat="request in queue">
+        <rd-widget ng-click="isCollapsed = !isCollapsed" class="col-md-6">
+            <rd-widget-header href="#" uisref="queue" title="{{request.get('singer')}}">
+
+                <img class="profile-pic img-circle" ng-src="{{singers[request.get('singerOrder')]}}" alt="singer pic">
+
+
             </rd-widget-header>
 
             <rd-widget-body>
 
-                <div ng-show="sessionUser.get('nick')" class="widget-content clearfix">
-                    <rd-loading ng-hide="queue">
-                    </rd-loading>
+                <div class="widget-content clearfix">
+                    <div class="media">
 
-                    <div ng-class="{hidden: !queue}" ng-hide="queue[0]">Ther are no songs in the queue at the moment. Add a request from the <a href="#" ui-sref="catalog.artists">catalog</a> or <a href="#" ui-sref="main">go home</a> for the main menu.
+                        <!-- <ul> -->
+                        <div class="media-body">{{request.get('requests')[0].songName}}{{request.get('requests')[0].get('bareFile')}}</div>
+                        <div collapse="isCollapsed">
+                            <div class="well">
+                                <ul>
+                                    <li ng-repeat="req in request.get('requests')">{{req.songName}}{{req.get('bareFile')}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- </ul> -->
+
                     </div>
-                    <ol>
-                          <li  ng-hide="singerMatch(request.get('singer'))" ng-repeat="request in queue" ng-class="{'bg-info': singerMatch(request.get('singer'))}">
-
-                <div ng-show="singerMatch(request.get('singer'))" class="bg-info small pull-right">Aprx {{queue.indexOf(request)*3.5}} mins.</div>{{request.get('singer')}}
-
-                <ul>
-                    <li ng-repeat="req in request.get('requests')">{{req.songName}}{{req.get('bareFile')}}</li>
-                </ul>
-                 
-            </li>
-            
-            <li  ng-show="singerMatch(request.get('singer'))" ng-repeat="request in queue" ng-class="{'bg-info': singerMatch(request.get('singer'))}">
- <a href="#" class="list-group-item" ui-sref="requests">
-                <div ng-show="singerMatch(request.get('singer'))" class="bg-info small pull-right">Aprx {{queue.indexOf(request)*3.5}} mins.</div>{{request.get('singer')}}
-
-                <ul>
-                    <li ng-repeat="req in request.get('requests')">{{req.songName}}{{req.get('bareFile')}}</li>
-                </ul>
-            </a>        
-            </li>
-         
-        </ol>
-
-                </div>
-
             </rd-widget-body>
 
             <rd-widget-footer></rd-widget-footer>
         </rd-widget>
-<!--     <div class="widget">
+        </div>
+
+    </div>
+
+    <!--     <div class="widget">
         <div class="widget-header">
             Crab Bowl Queue
             <div class="pull-right col-xs-2 small text-center" style="line-height:1;color:#800000;">Wait time(apx):

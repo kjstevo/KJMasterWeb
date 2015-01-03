@@ -1,11 +1,26 @@
 'use strict';
 
 angular.module('kjmApp')
-    .controller('HistoryCtrl', function($scope, AuthDb,$state) {
+    .controller('HistoryCtrl', function($scope, AuthDb,$state,$stateParams) {
         $scope.title = 'Song History';
         if ($scope.sessionUser) {
             $scope.currentState=$state.$current.self.name;
-            AuthDb.getHistory().then(function(results) {
+            var options={
+                'type':'none'
+            };
+            if(angular.isDefined($stateParams.id)){
+                    options={
+                        'type':'id',
+                        'id':$stateParams.id
+                    };
+            }
+            if(angular.isDefined($stateParams.name)){
+               options={
+                        'type':'name',
+                        name:$stateParams.name
+                    };   
+            }
+            AuthDb.getHistory(options).then(function(results) {
                 $scope.results = results.map(function(obj) {
                     return {
                         id: obj.id,

@@ -21,7 +21,7 @@
 //    });
 //   });
 angular.module('kjmApp')
-    .factory('User', function User($q,Queue) {
+    .factory('User', function User($q, Queue, SongFile) {
 
 
         var User = Parse.Object.extend('User', {
@@ -56,19 +56,19 @@ angular.module('kjmApp')
         });
         Object.defineProperty(User.prototype, 'requestListEntry', {
             get: function() {
-                if(!angular.isDefined(this.get('requestListEntry'))){
-                    var queue=new Queue();
-                   var defer=$q.defer();
-                    queue.set('singer',this.get('nick'));
-                    queue.save().then(function(result){
-                        result.set('requestListEntry',result);
-                        result.save().then(function(user){
-                        var request=user.get('requestListEntry');
+                if (!angular.isDefined(this.get('requestListEntry'))) {
+                    var queue = new Queue();
+                    var defer = $q.defer();
+                    queue.set('singer', this.get('nick'));
+                    queue.save().then(function(result) {
+                        result.set('requestListEntry', result);
+                        result.save().then(function(user) {
+                            var request = user.get('requestListEntry');
                             defer.resolve(request);
-                        });    
+                        });
                     });
                 } else {
-                    var requst=this.get('requestListEntry');
+                    var request = this.get('requestListEntry');
                     defer.resolve(request);
                 }
                 return defer.promise;
@@ -98,7 +98,7 @@ angular.module('kjmApp')
 
 
 
-    
+
 //     loadUserByUsername: function(username) {
 //         this.query = (new Parse.Query(User));
 //         this.query.equalTo('username', username);

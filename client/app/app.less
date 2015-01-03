@@ -5,6 +5,10 @@
 /**
  * App-wide Styles
  */
+
+ [ng\:cloak], [ng-cloak], .ng-cloak {
+  display: none !important;
+}
 .header {
   background-color:@sidebarBaseColor;
 }
@@ -64,6 +68,7 @@ body {
     }
 }
 // injector
+@import 'account/faceLogin/faceLogin.less';
 @import 'account/login/login.less';
 @import 'admin/admin.less';
 @import 'catalog/catalog.less';

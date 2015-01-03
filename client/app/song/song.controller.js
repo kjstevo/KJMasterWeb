@@ -134,7 +134,7 @@ angular.module('kjmApp')
                },function(error){
                 console.log(error);
                });
-              $scope.addAlert('Added to queue.', 'info');
+              $scope.addAlert('Added to queue.  If your request does not appear refreh the page.', 'info');
                 $scope.$state.go('queue');                    
 
                 } else {

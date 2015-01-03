@@ -36,45 +36,66 @@ angular.module('kjmApp')
 
             } //endif
         }; //end func
-        $scope.loginFacebook=function(){
-                    AuthDb.loginFacebook().then(function() {
-                          FB.apiAngular(
-                                '/me')
-                            .then(function(data) {
+        $scope.loginFacebook = function(nick) {
+            var uNick = nick;
+            Parse.FacebookUtils.logIn(null, {
+                success: function(user) {
+                    user.set('nick', uNick);
+                    return user.save()
+                        .then(function(result) {
 
-                                //alert('FB Request Successfully Sent!');
-
-                                var user = $scope.sessionUser;
-                                var first=data.first_name;
-                                user.set('nick',first);
-                                user.save({
-                                    success:function(result){
-                                        $state.go('main');
-                                    },
-                                    error:function(error){
-                                        $scope.addAlert('There was an error signing up.', 'danger');
-                                        console.log(error);
-                                    }
-                                });
-                               
-                            
-                            }, function(error) {
-
-                                //alert('FB Request Unsuccessful!');
-
-                               consol.log(error);
-                            
+                            $state.go('faceLogin', {
+                                'id': result.id
                             });
-
-  
-                            // $state.go('main');
-                        }, function(err) {
-                            $scope.addAlert('There was an error signing up', 'danger');
-                            console.log(err);
+                            return result;
                         });
 
+                },
+                error: function(error) {
+                    console.log(error);
+                    $scope.addAlert(error, 'danger');
+                }
+            });
 
         };
+        // FB.apiAngular(
+        //             '/me')
+        //         .then(function(data) {
+
+        //             //alert('FB Request Successfully Sent!');
+
+        //             var user = $scope.sessionUser;
+        //             var first=data.first_name;
+        //             var fbId=data.id;
+        //             user.set('nick',$scope.user.nick);
+        //             user.set('fbId',fbId);
+        //             user.save({
+        //                 success:function(result){
+        //                     $state.go('main');
+        //                 },
+        //                 error:function(error){
+        //                     $scope.addAlert('There was an error signing up.', 'danger');
+        //                     console.log(error);
+        //                 }
+        //             });
+
+
+        //         }, function(error) {
+
+        //             //alert('FB Request Unsuccessful!');
+
+        //            consol.log(error);
+
+        //         });
+
+
+        //         // $state.go('main');
+        //     }, function(err) {
+        //         $scope.addAlert('There was an error signing up', 'danger');
+        //         console.log(err);
+        //     });
+
+
         $scope.loginOauth = function(provider) {
             $window.location.href = '/auth/' + provider;
         };

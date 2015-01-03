@@ -19,7 +19,7 @@
     <!-- build:css({.tmp,client}) app/app.css -->
 
 
-    <link rel="stylesheet" href="app/4f4f3808.app.css">
+    <link rel="stylesheet" href="app/ce1265b2.app.css">
 
 
     <!-- injector:css -->
@@ -66,7 +66,8 @@
     <div class="container">
         <row>
             <div class="col-xs-12">
-                <div id="page-wrapper" ng-show="!isViewLoading" ng-class="{'active': toggle}" ng-cloak>
+
+                <div id="page-wrapper" ng-class="{'active': toggle}" ng-cloak>
                     <!-- Sidebar -->
                     <div id="sidebar-wrapper" ng-swipe-left="swipe(0)" ng-swipe-right="swipe(1)">
                         <ul class="sidebar">
@@ -125,7 +126,10 @@
                                 </div>
                             </div>
                             <section data-ui-view>
-                                <rd-loading></rd-loading>
+                                <div class="loading">
+                                    <div class="double-bounce1"></div>
+                                    <div class="double-bounce2"></div>
+                                </div>
                             </section>
 
 
@@ -142,13 +146,13 @@
         <!--End Row-->
     </div>
     <!--End Container-->
-     <div id="fb-root"></div>
+    <div id="fb-root"></div>
 
-   
 
-  
+
+
     <!-- Async resolve promise when FB SDK is loaded, this triggers Parse.FacebookUtils.init() -->
-  
+
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID 
     <script>
     (function(i, s, o, g, r, a, m) {
@@ -174,10 +178,13 @@
     <script src="app/59277eb6.vendor.js"></script>
 
     <!-- build:js({.tmp,client}) app/app.js -->
-    <script src="app/05e31b99.app.js"></script>
+    <script src="app/5d95584f.app.js"></script>
     <!-- injector:js -->
+    <!--
     <script src="app/ParseServices/ParseSDK/ParseSDK.service.js"></script>
     <script src="app/account/account.js"></script>
+    <script src="app/account/faceLogin/faceLogin.controller.js"></script>
+    <script src="app/account/faceLogin/faceLogin.js"></script>
     <script src="app/account/login/login.controller.js"></script>
     <script src="app/account/settings/settings.controller.js"></script>
     <script src="app/account/signup/signup.controller.js"></script>
@@ -228,15 +235,18 @@
     <script src="components/mongoose-error/mongoose-error.directive.js"></script>
     <script src="components/navbar/navbar.controller.js"></script>
     <script src="components/socket/socket.service.js"></script>
+-->
     <!-- endinjector -->
     <!-- endbuild -->
-    
+
     <script type="text/javascript">
-      (function(doc, script) {
-        var js, 
+    (function(doc, script) {
+        var js,
             fjs = doc.getElementsByTagName(script)[0],
             add = function(url, id) {
-                if (doc.getElementById(id)) {return;}
+                if (doc.getElementById(id)) {
+                    return;
+                }
                 js = doc.createElement(script);
                 js.src = url;
                 id && (js.id = id);
@@ -245,18 +255,18 @@
         // Facebook SDK
         add('//connect.facebook.net/en_US/all.js', 'facebook-jssdk');
         // Twitter SDK
-      //  add('//platform.twitter.com/widgets.js', 'twitter-wjs');
-      }(document, 'script'));
+        //  add('//platform.twitter.com/widgets.js', 'twitter-wjs');
+    }(document, 'script'));
     </script>
 
-  
+
     <!-- Async resolve promise when FB SDK is loaded, this triggers Parse.FacebookUtils.init() -->
     <script>
-      var fbDeferred = $.Deferred();
-      window.fbPromise = fbDeferred.promise();
-      window.fbAsyncInit = function() {
+    var fbDeferred = $.Deferred();
+    window.fbPromise = fbDeferred.promise();
+    window.fbAsyncInit = function() {
         fbDeferred.resolve();
-      };
+    };
     </script>
 </body>
 
