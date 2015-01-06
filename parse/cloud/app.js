@@ -13,6 +13,20 @@ app.use(express.bodyParser());    // Middleware for reading request body
 app.get('/hello', function(req, res) {
   res.render('hello', { message: 'Congrats, you just set up your app!' });
 });
+app.get('/refresh', function(req, res) {
+ 
+	res.render('refresh',{message:Parse.Cloud.run('endOfNight', {}, {
+		  success: function(result) {
+		   return result;
+		  },
+		  error: function(error) {
+		  	return error;
+		  }
+		})
+
+   
+});
+});
 app.get('/*', function(req, res) {
   res.render('index', { });
 });
