@@ -9,7 +9,7 @@ angular.module('kjmApp')
       
 //button states
        
-
+$scope.isProcessing=true;
         function checkQuickList() {
             AuthDb.isInQuickList($stateParams.id).then(function(results) {
                 if (results.get('key') > 0) {
@@ -62,52 +62,58 @@ angular.module('kjmApp')
         }
   ///Button functions
         $scope.addSongbook = function(id) {
+            $scope.isProcessing=true;
             AuthDb.addToSongbook(id).then(function() {
                 $scope.isInSongbook = true;
                 $scope.addAlert('The song has been added to your songbook.', 'info');
 
             });
-
+$scope.isProcessing=false;
 
         };
         $scope.delSongbook = function(id) {
+            $scope.isProcessing=true;
             AuthDb.delFromSongbook(id).then(function() {
                 $scope.isInSongbook = false;
                 $scope.addAlert('The song has been deleted from your songbook.', 'info');
         
             });
-
+$scope.isProcessing=false;
 
         };
         $scope.delRequestList = function(requestFromWeb) {
+            $scope.isProcessing=true;
             AuthDb.delFromRequestList(requestFromWeb).then(function() {
                 $scope.isInRequestList = false;
                 $scope.addAlert('The request has been deleted from the queue.', 'info');
         $scope.$state.go('queue');
             });
 
-
+            $scope.isProcessing=false;
         };
         $scope.addQuickList = function(id) {
+            $scope.isProcessing=true;
             AuthDb.addToQuickList(id).then(function() {
                 $scope.isInQuickList = true;
                 $scope.addAlert('The song has been added to your quick list.', 'info');
 
             });
-
+$scope.isProcessing=false;
 
         };
         $scope.delQuickList = function(id) {
+            $scope.isProcessing=true;
             AuthDb.delFromQuickList(id).then(function() {
                 $scope.isInQuickList = false;
                 $scope.addAlert('The song has been deleted from your quick list.', 'info');
 
             });
-
+            $scope.isProcessing=false;
 
         };
 
         $scope.request = function(id) {
+
             if (!$scope.sessionUser.get('nick')) {
                 $scope.addAlert('You must <a href="/login">login</a> or <a href="/signup">sign up</a> to perform that function', 'warning');
                 return;
@@ -126,6 +132,7 @@ angular.module('kjmApp')
                 }
             });
             modalInstance.result.then(function(confirmed) {
+            $scope.isProcessing=true;
                 if (confirmed) {
                     //AuthDb.addToQueue($scope.id);
                 AuthDb.addToQueue($scope.song).then(function(req){
@@ -142,6 +149,7 @@ angular.module('kjmApp')
                     $scope.addAlert('cancel', 'info');
 
                 }
+                $scope.isProcessing=false;
             });
 
         };
@@ -245,4 +253,5 @@ if ($stateParams.id || $stateParams.name) {
 
         ];
 
+$scope.isProcessing=false;
     });

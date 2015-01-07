@@ -21,3 +21,4 @@ deploy.bat
 dep.bat
 serve.bat
 db/gamebase*
+*.exe

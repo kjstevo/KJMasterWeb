@@ -35,7 +35,7 @@ angular.module('kjmApp')
 
 
         // var Catalog = Parse.Object.extend({
-        //     className: 'fish2_Catalog',
+        //     className: 'Song',
         //     // Extend the object with getter and setters  (see parse-angular-patch GitHub repo)
         //     attrs: ['artist',
         //         'title',

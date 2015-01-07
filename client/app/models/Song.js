@@ -10,7 +10,7 @@
 // 	// worry about objects instantiation if you fetch them from a Parse query for instance
 
 // 	var Song = Parse.Object.extend({
-// 		className:'fish2_Catalog',
+// 		className:'Song',
 // 		// Extend the object with getter and setters  (see parse-angular-patch GitHub repo)
 // 		attrs: ['artist','title','filepath','bareFile','discNo','track']
 // 	});
@@ -23,7 +23,7 @@
 // 		model: Song,
 // 		// We give a className to be able to retrieve the collection
 // 		// from the getClass helper. See parse-angular-patch git repo
-// 		className: 'fish2_Catalog',
+// 		className: 'Song',
 // 		comparator: function(model) {
 // 			return -model.createdAt.getTime();
 // 		},

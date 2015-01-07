@@ -29,20 +29,20 @@ angular.module('kjmApp')
                 $scope.swipe(1);
             }
             if (type === 'title') {
-                $state.go('catalog.artist');
+               $scope.swipe(1);
             }
             if (type === 'search') {
-                $state.go('catalog.title');
+               $scope.swipe(1);
             }
 
         };
 
         $scope.swipeLeft = function(type) {
             if (type === 'artist') {
-                $state.go('catalog.title');
+              $scope.swipe(0);
             }
             if (type === 'title') {
-                $state.go('catalog.search');
+                $scope.swipe(0);
             }
             if (type === 'search') {
                 $scope.swipe(0);

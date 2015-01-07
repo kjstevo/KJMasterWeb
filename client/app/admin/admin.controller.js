@@ -9,7 +9,17 @@ angular.module('kjmApp')
       }, function(err){
         console.log(err);
       });
-    
+    $scope.updateSearch=function(){
+      Parse.Cloud.run('addSearchTerms',{
+        success:function(results){
+          $scope.addAlert(results,'info');
+        },
+        error:function(err){
+          $scope.addAlert(err,'danger');
+        }
+      });
+
+    };
 
     $scope.delete = function(user) {
       AuthDb.deleteUser(user);

@@ -1,5 +1,8 @@
 <main-Menu></main-Menu>
-<div class="col-xs-12">
+<div class="col-xs-12" ng-show="isProcessing">
+<rd-Loading ></rd-Loading>
+</div>
+<div ng-hide="isProcessing" class="col-xs-12">
     <a ng-show="lastState" ui-sref="{{lastState}}" href="#">
         <span class="glyphicon glyphicon-hand-left">
             <span>Back</span>
