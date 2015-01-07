@@ -9,7 +9,7 @@ angular.module('kjmApp')
       
 //button states
        
-$scope.isProcessing=true;
+
         function checkQuickList() {
             AuthDb.isInQuickList($stateParams.id).then(function(results) {
                 if (results.get('key') > 0) {
@@ -66,9 +66,9 @@ $scope.isProcessing=true;
             AuthDb.addToSongbook(id).then(function() {
                 $scope.isInSongbook = true;
                 $scope.addAlert('The song has been added to your songbook.', 'info');
-
+                $scope.isProcessing=false;
             });
-$scope.isProcessing=false;
+
 
         };
         $scope.delSongbook = function(id) {
@@ -76,9 +76,9 @@ $scope.isProcessing=false;
             AuthDb.delFromSongbook(id).then(function() {
                 $scope.isInSongbook = false;
                 $scope.addAlert('The song has been deleted from your songbook.', 'info');
-        
+$scope.isProcessing=false;        
             });
-$scope.isProcessing=false;
+
 
         };
         $scope.delRequestList = function(requestFromWeb) {
@@ -89,16 +89,16 @@ $scope.isProcessing=false;
         $scope.$state.go('queue');
             });
 
-            $scope.isProcessing=false;
+            
         };
         $scope.addQuickList = function(id) {
             $scope.isProcessing=true;
             AuthDb.addToQuickList(id).then(function() {
                 $scope.isInQuickList = true;
                 $scope.addAlert('The song has been added to your quick list.', 'info');
-
-            });
 $scope.isProcessing=false;
+            });
+
 
         };
         $scope.delQuickList = function(id) {
@@ -106,9 +106,9 @@ $scope.isProcessing=false;
             AuthDb.delFromQuickList(id).then(function() {
                 $scope.isInQuickList = false;
                 $scope.addAlert('The song has been deleted from your quick list.', 'info');
-
+$scope.isProcessing=false;
             });
-            $scope.isProcessing=false;
+            
 
         };
 
@@ -138,18 +138,21 @@ $scope.isProcessing=false;
                 AuthDb.addToQueue($scope.song).then(function(req){
                    var webReq=new RequestFromWeb();
                    webReq.create($scope.sessionUser,$scope.song,req,[$scope.sessionUser.get('nick')]);
+               $scope.addAlert('Added to queue.  If your request does not appear refreh the page.', 'info');
+                $scope.$state.go('queue'); 
+         
                },function(error){
                 console.log(error);
                });
-              $scope.addAlert('Added to queue.  If your request does not appear refreh the page.', 'info');
-                $scope.$state.go('queue');                    
+                           
 
                 } else {
                     
                     $scope.addAlert('cancel', 'info');
+                    $scope.isProcessing=false;
 
                 }
-                $scope.isProcessing=false;
+                
             });
 
         };
@@ -253,5 +256,5 @@ if ($stateParams.id || $stateParams.name) {
 
         ];
 
-$scope.isProcessing=false;
+
     });

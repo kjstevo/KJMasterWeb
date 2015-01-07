@@ -19,7 +19,7 @@
                         <div collapse="isCollapsed">
                             <div class="well">
                                 <ul>
-                                    <li ng-repeat="req in request.get('requests')">{{req.songName}}{{req.get('bareFile')}}</li>
+                                    <li ng-click="reqClick(request.get('singer'))" ng-repeat="req in request.get('requests')">{{req.songName}}{{req.get('bareFile')}}</li>
                                 </ul>
                             </div>
                         </div>

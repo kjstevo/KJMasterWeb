@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('kjmApp')
-    .controller('QueueCtrl', function($scope, AuthDb) {
+    .controller('QueueCtrl', function($scope, AuthDb,$state) {
             $scope.singers = [];
             $scope.singerIds = [];
             AuthDb.getQueue('large').then(function(results) {
@@ -23,7 +23,11 @@ angular.module('kjmApp')
 
             });
 
-
+            $scope.reqClick=function(singer){
+                if (singer===$scope.sessionUser.get('nick')){
+                    $state.go('requests');
+                }
+            };
 
             AuthDb.getQueueCount().then(function(count) {
                 $scope.queueCount = count;
