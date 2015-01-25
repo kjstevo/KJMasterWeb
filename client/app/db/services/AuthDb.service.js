@@ -19,7 +19,7 @@ angular.module('kjmApp')
         };
 
         $rootScope.sessionUser = function() {
-            return currentUser;
+            return Parse.User.current();
         };
 
         try {
@@ -75,8 +75,9 @@ angular.module('kjmApp')
             loginFacebook: function(user) {
                 currentUser = Parse.User.current();
                 $cookieStore.put('token', currentUser.getSessionToken());
-                $rootScope.sessionUser = currentUser;
-
+                $rootScope.sessionUser = function(){
+                    return Parse.User.current();
+                };
 
 
                 return currentUser;
@@ -90,7 +91,10 @@ angular.module('kjmApp')
                         try {
                             currentUser = Parse.User.current();
                             $cookieStore.put('token', currentUser.getSessionToken());
-                            $rootScope.sessionUser = currentUser;
+                            $rootScope.sessionUser = function(){
+                    return Parse.User.current();
+                };
+                
                             defer.resolve(currentUser);
 
                         } catch (error) {
@@ -613,6 +617,9 @@ angular.module('kjmApp')
             delFromRequestList: function(requestFromWeb) {
                 var user = Parse.User.current();
                 var defer = $q.defer();
+                var query=new Parse.Query('Song');
+                var song=requestFromWeb.get('Song');
+                
                 var request = requestFromWeb.get('request');
                 request.set('delete', true);
                 defer.resolve(request.save().then(function(res) {
@@ -710,6 +717,7 @@ angular.module('kjmApp')
                     }, function(error) {
                         defer.reject(error);
                     });
+                    
                 return defer.promise;
             },
             // addToQueue: function(id) {

@@ -17,15 +17,18 @@ angular.module('kjmApp')
                 'songName',
                 'singer',
                 'filePath',
-                'songId'
+                'songId',
+                'autoReqNum'
 
             ],
-            create:function(songName,singerName,filePath,songId){
+            create:function(songName,singerName,filePath,autoReqNum,songId){
                 var _this=this;
                 _this.set('songName',songName);
                 _this.set('singer',singerName);
                 _this.set('filePath',filePath);
-                _this.set('songId',songId);
+                _this.set('autoReqNum',autoReqNum);
+                
+                console.log('requesting with auto'+_this.get('autoReqNum')+ 'and songid'+_this.get('songId'));
                 _this.set('new',true);
                 return _this.save().then(function(object){
                         return object;

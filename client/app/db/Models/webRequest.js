@@ -41,8 +41,9 @@ angular.module('kjmApp')
                             return {
                                 filePath: obj.get('filepath'),
                                 singer: this.get('singer').get('nick'),
-                                songId: obj.get('key'),
-                                songName: obj.get('bareFile')
+                                songId: obj.get('songId'),
+                                songName: obj.get('bareFile'),
+                                autoReqNum:obj.get('autoreqnum')
                             };
                         });
                         defer.resolve(res);
